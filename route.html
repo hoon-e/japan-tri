@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="선택한 일본 소도시 로드트립의 일자별 이동 순서와 지도를 확인하세요."
+    />
+    <title>로드트립 상세 지도 · 로컬 드라이브</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQ3ynhHdqjMZ9xftJz68vwp5JVBF0NM="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="./src/route-detail.css" />
+    <script
+      defer
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="./src/route-detail.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문 바로가기</a>
+
+    <header class="site-header">
+      <a class="brand" href="./index.html" aria-label="로컬 드라이브 홈으로">
+        <span aria-hidden="true">🚙</span>
+        <span>로컬 드라이브</span>
+      </a>
+      <a class="home-link" href="./index.html">다른 여행지 보기</a>
+    </header>
+
+    <main id="main-content">
+      <section id="route-loading" class="status-card" aria-live="polite">
+        <p class="eyebrow">Route detail</p>
+        <h1>여행 루트를 불러오는 중입니다</h1>
+      </section>
+
+      <section id="route-error" class="status-card" aria-live="polite" hidden>
+        <p class="eyebrow">Route not found</p>
+        <h1>요청한 여행 루트를 찾을 수 없어요</h1>
+        <p>
+          여행지와 기간 정보가 올바른지 확인하거나 메인 화면에서 루트를 다시
+          선택해 주세요.
+        </p>
+        <a class="primary-link" href="./index.html">여행지 다시 선택하기</a>
+      </section>
+
+      <article id="route-detail" hidden>
+        <header class="route-hero">
+          <div>
+            <p id="route-region" class="eyebrow"></p>
+            <h1 id="route-title"></h1>
+            <p id="route-summary" class="route-summary"></p>
+          </div>
+          <dl class="route-meta">
+            <div>
+              <dt>여행 기간</dt>
+              <dd id="route-duration"></dd>
+            </div>
+            <div>
+              <dt>도착 거점</dt>
+              <dd id="route-airport"></dd>
+            </div>
+          </dl>
+        </header>
+
+        <section class="map-section" aria-labelledby="map-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Editorial route map</p>
+              <h2 id="map-title">일자별 이동 지도</h2>
+            </div>
+            <p>표시된 선은 추천 방문 순서이며 실제 내비게이션 경로가 아닙니다.</p>
+          </div>
+
+          <div
+            id="day-filter"
+            class="day-filter"
+            role="group"
+            aria-label="지도에 표시할 여행 일자"
+          ></div>
+          <div class="map-layout">
+            <div
+              id="route-map"
+              class="route-map"
+              role="region"
+              aria-label="추천 방문지 지도"
+            ></div>
+            <aside class="map-legend" aria-labelledby="legend-title">
+              <h3 id="legend-title">지도 범례</h3>
+              <ul id="map-legend-list"></ul>
+            </aside>
+          </div>
+          <p id="map-status" class="map-status" role="status"></p>
+          <p class="map-attribution">
+            지도 데이터 ©
+            <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
+            contributors · 지도 표현
+            <a href="https://leafletjs.com/">Leaflet</a>
+          </p>
+        </section>
+
+        <section class="itinerary-section" aria-labelledby="itinerary-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Text itinerary</p>
+              <h2 id="itinerary-title">일정 전체 보기</h2>
+            </div>
+            <p>지도를 사용할 수 없어도 아래 방문 순서로 일정을 확인할 수 있어요.</p>
+          </div>
+          <ol id="itinerary-list" class="itinerary-list"></ol>
+        </section>
+
+        <section class="route-notice" aria-labelledby="notice-title">
+          <h2 id="notice-title">출발 전에 확인하세요</h2>
+          <ul id="driving-notes"></ul>
+          <p>
+            이 지도는 여행 계획을 돕는 편집 자료입니다. 출발 전 도로 통제,
+            기상, 운영 시간과 실제 주행 경로를 공식 안내 및 내비게이션에서 다시
+            확인하세요.
+          </p>
+        </section>
+      </article>
+
+      <noscript>
+        <section class="status-card">
+          <h1>JavaScript가 필요합니다</h1>
+          <p>
+            상세 루트 데이터를 표시하려면 JavaScript를 활성화해 주세요. 메인
+            화면의 텍스트 일정은 JavaScript 없이도 확인할 수 있습니다.
+          </p>
+          <a class="primary-link" href="./index.html">메인 화면으로 돌아가기</a>
+        </section>
+      </noscript>
+    </main>
+
+    <footer>
+      <p>항공편과 도로 상황은 바뀔 수 있습니다. 예약 전 공식 안내를 확인하세요.</p>
+    </footer>
+  </body>
+</html>

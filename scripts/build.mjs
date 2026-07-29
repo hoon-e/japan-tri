@@ -14,6 +14,7 @@ await mkdir(metadata, { recursive: true });
 
 await cp(resolve(root, "src"), resolve(client, "src"), { recursive: true });
 await cp(resolve(root, "index.html"), resolve(client, "index.html"));
+await cp(resolve(root, "route.html"), resolve(client, "route.html"));
 
 const index = await readFile(resolve(root, "hosting", "worker.js"), "utf8");
 await writeFile(resolve(server, "index.js"), index);
