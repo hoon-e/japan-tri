@@ -55,6 +55,64 @@ function selectRandomItem(items, random = Math.random) {
   return candidates[Math.floor(boundedValue * candidates.length)] ?? null;
 }
 
+export function parseDriveEstimate(drive) {
+  if (!isNonEmptyString(drive)) return null;
+
+  const kmMatch = drive.match(/약\s*([\d,.]+)\s*km/i);
+  const hoursMatch = drive.match(/(\d+)\s*시간(?:\s*(\d+)\s*분)?/);
+  const minutesOnlyMatch = drive.match(/약\s*(\d+)\s*분/);
+
+  const kilometers = kmMatch ? Number(kmMatch[1].replaceAll(",", "")) : null;
+  if (kilometers !== null && !Number.isFinite(kilometers)) return null;
+
+  let minutes = null;
+  if (hoursMatch) {
+    minutes = Number(hoursMatch[1]) * 60 + Number(hoursMatch[2] ?? 0);
+  } else if (minutesOnlyMatch) {
+    minutes = Number(minutesOnlyMatch[1]);
+  }
+
+  if (minutes !== null && !Number.isFinite(minutes)) return null;
+  if (kilometers === null && minutes === null) return null;
+
+  return { kilometers, minutes };
+}
+
+export function summarizeRouteMetrics(route) {
+  const metrics = (route?.days ?? []).reduce(
+    (accumulator, day) => {
+      const estimate = parseDriveEstimate(day.drive);
+      if (estimate?.kilometers !== null) {
+        accumulator.kilometers += estimate.kilometers;
+      }
+      if (estimate?.minutes !== null) {
+        accumulator.minutes += estimate.minutes;
+      }
+      return accumulator;
+    },
+    { kilometers: 0, minutes: 0 },
+  );
+
+  if (metrics.kilometers === 0 && metrics.minutes === 0) return null;
+  return metrics;
+}
+
+export function formatRouteEstimate(metrics) {
+  if (!metrics) return "표기된 운전 정보 없음";
+
+  const parts = [];
+  if (metrics.kilometers > 0) {
+    parts.push(`약 ${metrics.kilometers.toFixed(0)}km`);
+  }
+  if (metrics.minutes > 0) {
+    const hours = Math.floor(metrics.minutes / 60);
+    const minutes = metrics.minutes % 60;
+    parts.push(hours > 0 ? `${hours}시간 ${minutes}분` : `${minutes}분`);
+  }
+
+  return parts.join(" · ");
+}
+
 /**
  * Return unique, addressable destination records.
  *
@@ -186,6 +244,16 @@ function renderDestinationCard(destination) {
     text: `도착 거점 · ${destination.airport}`,
   });
   const summary = createElement("p", { text: destination.summary });
+  const facts = createElement("dl", { className: "destination-facts" });
+  [
+    ["추천 일정", destination.recommendedDuration],
+    ["비교 루트", `${destination.routes.length}개`],
+  ].forEach(([term, description]) => {
+    facts.append(
+      createElement("dt", { text: term }),
+      createElement("dd", { text: description }),
+    );
+  });
 
   const reasons = createElement("dl", { className: "destination-reasons" });
   [
@@ -211,7 +279,7 @@ function renderDestinationCard(destination) {
     text: `추천 일정 · ${destination.recommendedDuration}`,
   });
 
-  body.append(region, heading, airport, summary, reasons, highlights, duration);
+  body.append(region, heading, airport, summary, facts, reasons, highlights, duration);
   card.append(image, body);
   return card;
 }
@@ -255,6 +323,39 @@ function renderRoute(destination, route, panel) {
   panel.setAttribute("aria-labelledby", `route-tab-${route.duration}`);
   panel.tabIndex = 0;
 
+  const dashboard = createElement("section", {
+    className: "route-dashboard",
+  });
+  const dashboardHeading = createElement("h4", { text: "한눈에 보는 이번 루트" });
+  const dashboardFacts = createElement("dl", { className: "route-dashboard__facts" });
+  const routeMetrics = summarizeRouteMetrics(route);
+  const finalDay = route.days.at(-1);
+  [
+    ["기간", route.label],
+    ["총 일정", `${route.days.length}일`],
+    ["총 주행", formatRouteEstimate(routeMetrics)],
+    ["마지막 숙박", finalDay?.base ?? "정보 없음"],
+  ].forEach(([term, description]) => {
+    dashboardFacts.append(
+      createElement("dt", { text: term }),
+      createElement("dd", { text: description }),
+    );
+  });
+  const dashboardStops = createElement("ul", {
+    className: "route-dashboard__stops",
+  });
+  dashboardStops.setAttribute("aria-label", "일자별 빠른 보기");
+  route.days.forEach((day) => {
+    dashboardStops.append(
+      createElement("li", {
+        text: `${day.day}일차 · ${day.drive} · ${day.stops[0]} → ${
+          day.stops.at(-1) ?? ""
+        }`,
+      }),
+    );
+  });
+  dashboard.append(dashboardHeading, dashboardFacts, dashboardStops);
+
   const intro = createElement("p", {
     className: "route-summary",
     text: route.summary,
@@ -293,7 +394,7 @@ function renderRoute(destination, route, panel) {
     days.append(item);
   });
 
-  panel.append(intro);
+  panel.append(dashboard, intro);
   if (detailLink) panel.append(detailLink);
   panel.append(days);
 }
