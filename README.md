@@ -51,6 +51,6 @@ npm run check     # 전체 검증
 
 - Netlify: `netlify.toml`이 루트 publish와 기본 보안 헤더를 설정합니다.
 - GitHub Pages 또는 일반 정적 호스트: 저장소 루트의 `index.html`, `src/`를 그대로 배포합니다.
-- OpenAI Sites: `npm run build`가 Cloudflare Worker 호환 `dist/` 산출물(`dist/server/index.js`, `dist/client/`, `dist/.openai/hosting.json`)을 만듭니다. 다만 현재 저장소는 아직 `src/`와 `index.html`이 없어서 실제 배포는 source lane 완료 후에만 가능합니다.
+- 선택적 OpenAI Sites 전달용 Cloudflare Worker 형식 산출물은 `npm run build`로 로컬 생성합니다. 결과물에는 `dist/server/index.js`, `dist/client/`, `dist/.openai/hosting.json`이 포함됩니다. 현재 워크스페이스에서는 Sites 연동이 비활성화되어 실제 저장·배포 검증은 수행하지 않았으며, 프로젝트 ID는 플랫폼 프로비저닝 이후에만 추가할 수 있습니다.
 
 프로덕션 배포는 별도 승인 후 수행합니다.
