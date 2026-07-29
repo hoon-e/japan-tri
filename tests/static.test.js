@@ -69,6 +69,21 @@ test("the detail page keeps map controls and a textual itinerary accessible", ()
   assert.doesNotMatch(routeCss, /body\s*\{[^}]*min-width\s*:/is);
 });
 
+test("Leaflet CDN assets cannot block the textual route detail", () => {
+  assert.match(
+    routeHtml,
+    /<link(?=[^>]+leaflet\.css)(?=[^>]+media=["']print["'])(?=[^>]+onload=["'][^"']*media\s*=\s*['"]all['"])[^>]*>/is,
+  );
+  assert.match(
+    routeHtml,
+    /<script(?=[^>]+\basync\b)(?=[^>]+leaflet\.js)[^>]*>/is,
+  );
+  assert.match(
+    routeHtml,
+    /<script[^>]+type=["']module["'][^>]+src=["'][^"']*route-detail\.js["']/is,
+  );
+});
+
 test("the map uses policy-compatible tiles without runtime geocoding or prefetch", () => {
   assert.match(
     routeApp,
