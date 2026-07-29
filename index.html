@@ -37,67 +37,39 @@
       </section>
 
       <section
-        id="participant-section"
-        class="participant-section"
-        aria-labelledby="participant-title"
+        id="flight-deals"
+        class="flight-deals-section"
+        aria-labelledby="flight-deals-title"
       >
-        <div class="participant-section__intro">
-          <p class="eyebrow">우리끼리 랜덤 뽑기</p>
-          <h2 id="participant-title">함께 가는 5명 중<br />오늘의 행운 담당은?</h2>
-          <p>
-            이름을 한 명씩 등록해 주세요. 같은 이름은 두 번 넣을 수 없고,
-            정확히 5명이 모이면 한 명을 랜덤으로 뽑을 수 있어요.
-          </p>
-        </div>
-
-        <div class="participant-panel">
-          <form id="participant-form" class="participant-form">
-            <label for="participant-name">여행자 이름</label>
-            <div class="participant-form__controls">
-              <input
-                id="participant-name"
-                name="participant-name"
-                type="text"
-                maxlength="20"
-                autocomplete="off"
-                placeholder="예: 재훈"
-                required
-              />
-              <button id="participant-add-button" type="submit">추가하기</button>
-            </div>
-          </form>
-
-          <div class="participant-progress">
-            <p id="participant-message" aria-live="polite">
-              첫 번째 여행자를 등록해 주세요.
-            </p>
-            <strong id="participant-count">0/5명</strong>
+        <div class="section-heading flight-deals-heading">
+          <div>
+            <p class="eyebrow">11월 1·2주차 항공권</p>
+            <h2 id="flight-deals-title">직항 왕복 최저가 Top 5</h2>
           </div>
-
-          <ol
-            id="participant-list"
-            class="participant-list"
-            aria-label="등록된 여행자"
-          ></ol>
-
-          <button
-            id="participant-draw-button"
-            class="participant-draw-button"
-            type="button"
-            disabled
-          >
-            <span aria-hidden="true">✨</span>
-            5명 중 한 명 뽑기
-          </button>
-
-          <p
-            id="participant-result"
-            class="participant-result"
-            role="status"
-            aria-live="polite"
-            hidden
-          ></p>
+          <p class="flight-deals-badge">5인 · 2박 3일 / 3박 4일</p>
         </div>
+
+        <p class="flight-deals-description">
+          인천·김포에서 구마모토·다카마쓰·요나고로 떠나는 2026년 11월
+          1~14일 출발편을 비교합니다. 가격은 조회 시점의 5인 이코노미 왕복
+          총액이며 예약 단계에서 달라질 수 있어요.
+        </p>
+
+        <div class="flight-deals-meta">
+          <p id="flight-deals-updated">최신 가격을 불러오는 중입니다.</p>
+          <p>직항만 · 세금 포함 표시 가격 기준</p>
+        </div>
+
+        <ol
+          id="flight-deals-list"
+          class="flight-deals-list"
+          aria-live="polite"
+          aria-busy="true"
+        ></ol>
+
+        <p id="flight-deals-empty" class="empty-state" hidden>
+          아직 표시할 항공권 가격이 없습니다.
+        </p>
       </section>
 
       <section class="shortlist-section" aria-labelledby="shortlist-title">

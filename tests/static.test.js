@@ -14,11 +14,11 @@ test("the static entry point exposes the core journey and accessibility hooks", 
   assert.match(html, /id=["']route-tabs["'][^>]+role=["']tablist["']/);
   assert.match(html, /id=["']route-panel["']/);
   assert.match(html, /id=["']empty-state["']/);
-  assert.match(html, /id=["']participant-form["']/);
-  assert.match(html, /id=["']participant-name["']/);
-  assert.match(html, /id=["']participant-list["']/);
-  assert.match(html, /id=["']participant-draw-button["'][^>]+disabled/);
-  assert.match(html, /id=["']participant-result["'][^>]+aria-live=/);
+  assert.match(html, /id=["']flight-deals["']/);
+  assert.match(html, /id=["']flight-deals-list["'][^>]+aria-live=/);
+  assert.match(html, /id=["']flight-deals-updated["']/);
+  assert.match(html, /id=["']flight-deals-empty["']/);
+  assert.doesNotMatch(html, /participant-|5명 중 한 명 뽑기/);
   assert.match(html, /<script[^>]+type=["']module["'][^>]+src=["'][^"']*src\/app\.js["']/);
 });
 

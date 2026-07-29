@@ -6,6 +6,16 @@
 도로 통제, 렌터카 영업 조건은 바뀔 수 있으므로 실제 예약 전 운영 주체의 최신
 안내를 다시 확인해야 한다.
 
+## 항공권 가격 데이터
+
+- [SerpApi Google Flights API](https://serpapi.com/google-flights-api)
+- [SerpApi 요금제와 검색 한도](https://serpapi.com/pricing)
+- [GitHub Actions 예약 실행](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
+- [GitHub Actions secrets](https://docs.github.com/en/actions/concepts/security/secrets)
+
+브라우저에는 SerpApi 키를 전달하지 않는다. 예약 실행되는 GitHub Actions가
+가격을 조회하고 정규화된 최저가 Top 5 스냅샷만 공개한다.
+
 ## 직항 접근성
 
 | 후보 권역 | 확인한 공식 근거 | 검토 결과 |

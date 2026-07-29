@@ -1,0 +1,17 @@
+{
+  "status": "configuration_required",
+  "message": "실시간 항공권 가격 API 연결을 준비 중입니다.",
+  "updatedAt": null,
+  "source": "SerpApi Google Flights",
+  "search": {
+    "departureAirports": ["ICN", "GMP"],
+    "destinationAirports": ["KMJ", "TAK", "YGJ"],
+    "outboundStart": "2026-11-01",
+    "outboundEnd": "2026-11-14",
+    "tripNights": [2, 3],
+    "adults": 5,
+    "currency": "KRW",
+    "nonstopOnly": true
+  },
+  "offers": []
+}

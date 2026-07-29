@@ -2,13 +2,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  addParticipantName,
   getDefaultDuration,
   getRouteForDuration,
   normalizeDestinations,
-  normalizeParticipantName,
+  normalizeFlightDeals,
   selectRandomDestination,
-  selectRandomParticipant,
 } from "../src/app.js";
 
 const routes = [
@@ -103,54 +101,30 @@ test("selectRandomDestination handles an out-of-range random sample defensively"
   assert.ok(shortlist.includes(selectRandomDestination(shortlist, () => -1)));
 });
 
-test("normalizeParticipantName trims and normalizes user input", () => {
-  assert.equal(normalizeParticipantName("  김   재훈  "), "김 재훈");
-  assert.equal(normalizeParticipantName("Ａlice"), "Alice");
-  assert.equal(normalizeParticipantName(null), "");
-});
-
-test("addParticipantName rejects empty and duplicate names without mutating the list", () => {
-  const participants = ["재훈", "Alice"];
-
-  const empty = addParticipantName(participants, "   ");
-  const duplicate = addParticipantName(participants, "  alice ");
-
-  assert.deepEqual(empty, {
-    participants,
-    added: false,
-    reason: "empty",
+test("normalizeFlightDeals keeps valid offers sorted by price and capped at five", () => {
+  const makeOffer = (id, price) => ({
+    id,
+    origin: "ICN",
+    destination: "TAK",
+    destinationName: "다카마쓰",
+    outboundDate: "2026-11-01",
+    returnDate: "2026-11-03",
+    nights: 2,
+    price,
+    currency: "KRW",
+    airlines: ["테스트항공"],
   });
-  assert.deepEqual(duplicate, {
-    participants,
-    added: false,
-    reason: "duplicate",
-  });
-  assert.deepEqual(participants, ["재훈", "Alice"]);
-});
+  const offers = [6, 1, 4, 2, 5, 3].map((price) =>
+    makeOffer(String(price), price * 100000),
+  );
+  offers.push({ id: "invalid", price: -1 });
 
-test("addParticipantName accepts exactly five unique participants and rejects a sixth", () => {
-  let participants = [];
-
-  ["재훈", "민지", "수현", "지우", "도윤"].forEach((name) => {
-    const result = addParticipantName(participants, name);
-    assert.equal(result.added, true);
-    participants = result.participants;
-  });
-
-  assert.equal(participants.length, 5);
-  assert.deepEqual(addParticipantName(participants, "여섯째"), {
-    participants,
-    added: false,
-    reason: "full",
-  });
-});
-
-test("selectRandomParticipant only selects from the registered names", () => {
-  const participants = ["재훈", "민지", "수현", "지우", "도윤"];
-
-  assert.equal(selectRandomParticipant(participants, () => 0), "재훈");
-  assert.equal(selectRandomParticipant(participants, () => 0.999999), "도윤");
-  assert.equal(selectRandomParticipant([], () => 0.5), null);
+  assert.deepEqual(
+    normalizeFlightDeals({ status: "ok", offers }).map((offer) => offer.id),
+    ["1", "2", "3", "4", "5"],
+  );
+  assert.deepEqual(normalizeFlightDeals({ status: "error", offers }), []);
+  assert.deepEqual(normalizeFlightDeals(null), []);
 });
 
 test("getRouteForDuration returns the matching curated route and no foreign route", () => {

@@ -15,13 +15,20 @@ test("package scripts expose the documented validation and build commands", asyn
 
   assert.equal(pkg.scripts.start, "python3 -m http.server 4173");
   assert.equal(pkg.scripts.build, "node scripts/build.mjs");
+  assert.equal(
+    pkg.scripts["refresh:flights"],
+    "node scripts/update-flight-prices.mjs",
+  );
   assert.equal(pkg.scripts.test, "node --test tests/*.test.js");
   assert.equal(pkg.scripts["test:unit"], "node --test tests/app.test.js tests/data.test.js");
   assert.equal(pkg.scripts["test:static"], "node --test tests/static.test.js");
-  assert.equal(pkg.scripts.typecheck, "node --check src/app.js && node --check src/data.js");
+  assert.equal(
+    pkg.scripts.typecheck,
+    "node --check src/app.js && node --check src/data.js && node --check scripts/update-flight-prices.mjs",
+  );
   assert.equal(
     pkg.scripts.lint,
-    "node --check src/app.js && node --check src/data.js && node --check tests/*.test.js",
+    "node --check src/app.js && node --check src/data.js && node --check scripts/*.mjs && node --check tests/*.test.js",
   );
   assert.equal(
     pkg.scripts.check,

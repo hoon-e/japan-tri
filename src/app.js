@@ -1,7 +1,5 @@
 import { destinations } from "./data.js";
 
-export const PARTICIPANT_LIMIT = 5;
-
 const REQUIRED_DESTINATION_FIELDS = [
   "id",
   "name",
@@ -57,49 +55,6 @@ function selectRandomItem(items, random = Math.random) {
   return candidates[Math.floor(boundedValue * candidates.length)] ?? null;
 }
 
-export function normalizeParticipantName(value) {
-  if (typeof value !== "string") return "";
-  return value.normalize("NFKC").trim().replace(/\s+/g, " ");
-}
-
-function getParticipantKey(name) {
-  return normalizeParticipantName(name).toLocaleLowerCase("ko-KR");
-}
-
-export function addParticipantName(
-  participants,
-  rawName,
-  limit = PARTICIPANT_LIMIT,
-) {
-  const safeLimit =
-    Number.isInteger(limit) && limit > 0 ? limit : PARTICIPANT_LIMIT;
-  const current = Array.isArray(participants) ? [...participants] : [];
-  const name = normalizeParticipantName(rawName);
-
-  if (!name) {
-    return { participants: current, added: false, reason: "empty" };
-  }
-
-  if (current.length >= safeLimit) {
-    return { participants: current, added: false, reason: "full" };
-  }
-
-  const key = getParticipantKey(name);
-  if (current.some((participant) => getParticipantKey(participant) === key)) {
-    return { participants: current, added: false, reason: "duplicate" };
-  }
-
-  return {
-    participants: [...current, name],
-    added: true,
-    reason: null,
-  };
-}
-
-export function selectRandomParticipant(participants, random = Math.random) {
-  return selectRandomItem(participants, random);
-}
-
 /**
  * Return unique, addressable destination records.
  *
@@ -145,6 +100,51 @@ export function getRouteForDuration(destination, duration) {
 export function getDefaultDuration(destination) {
   if (!destination || !Array.isArray(destination.routes)) return null;
   return destination.routes[0]?.duration ?? null;
+}
+
+function isSafeHttpUrl(value) {
+  if (!isNonEmptyString(value)) return false;
+
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+function isValidFlightDeal(offer) {
+  return (
+    offer &&
+    typeof offer === "object" &&
+    isNonEmptyString(offer.id) &&
+    isNonEmptyString(offer.origin) &&
+    isNonEmptyString(offer.destination) &&
+    isNonEmptyString(offer.destinationName) &&
+    isNonEmptyString(offer.outboundDate) &&
+    isNonEmptyString(offer.returnDate) &&
+    Number.isInteger(offer.nights) &&
+    offer.nights > 0 &&
+    Number.isFinite(Number(offer.price)) &&
+    Number(offer.price) > 0 &&
+    isNonEmptyString(offer.currency) &&
+    Array.isArray(offer.airlines) &&
+    offer.airlines.length > 0 &&
+    offer.airlines.every(isNonEmptyString)
+  );
+}
+
+export function normalizeFlightDeals(payload, limit = 5) {
+  if (!payload || payload.status !== "ok" || !Array.isArray(payload.offers)) {
+    return [];
+  }
+
+  const safeLimit = Number.isInteger(limit) && limit > 0 ? limit : 5;
+  return payload.offers
+    .filter(isValidFlightDeal)
+    .map((offer) => ({ ...offer, price: Number(offer.price) }))
+    .sort((a, b) => a.price - b.price)
+    .slice(0, safeLimit);
 }
 
 function createElement(tagName, options = {}) {
@@ -381,115 +381,120 @@ function renderResult(destination, elements) {
   elements.result.hidden = false;
 }
 
-function initializeParticipantDraw(elements) {
-  let participants = [];
+function formatFlightDate(value) {
+  const date = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return value;
 
-  const setMessage = (message, isError = false) => {
-    elements.participantMessage.textContent = message;
-    elements.participantMessage.classList.toggle("is-error", isError);
-  };
+  return new Intl.DateTimeFormat("ko-KR", {
+    month: "numeric",
+    day: "numeric",
+    weekday: "short",
+    timeZone: "UTC",
+  }).format(date);
+}
 
-  const hideResult = () => {
-    elements.participantResult.hidden = true;
-    elements.participantResult.textContent = "";
-  };
+function formatFlightPrice(price, currency) {
+  try {
+    return new Intl.NumberFormat("ko-KR", {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(price);
+  } catch {
+    return `${Number(price).toLocaleString("ko-KR")} ${currency}`;
+  }
+}
 
-  const renderParticipants = () => {
-    elements.participantList.replaceChildren();
+function renderFlightDeals(payload, elements) {
+  const offers = normalizeFlightDeals(payload);
+  elements.flightDealsList.replaceChildren();
+  elements.flightDealsList.setAttribute("aria-busy", "false");
 
-    participants.forEach((name, index) => {
-      const item = createElement("li");
-      const number = createElement("span", {
-        className: "participant-list__number",
-        text: String(index + 1),
-      });
-      const label = createElement("span", {
-        className: "participant-list__name",
-        text: name,
-      });
-      const removeButton = createElement("button", {
-        className: "participant-list__remove",
-        text: "삭제",
-      });
-      removeButton.type = "button";
-      removeButton.setAttribute("aria-label", `${name} 삭제`);
-      removeButton.addEventListener("click", () => {
-        participants = participants.filter((_, itemIndex) => itemIndex !== index);
-        hideResult();
-        renderParticipants();
-        setMessage(`${name} 님을 명단에서 뺐어요.`);
-        elements.participantInput.focus();
-      });
-      item.append(number, label, removeButton);
-      elements.participantList.append(item);
+  if (offers.length === 0) {
+    elements.flightDealsEmpty.hidden = false;
+    elements.flightDealsEmpty.textContent =
+      payload?.status === "configuration_required"
+        ? "실시간 가격 API 연결을 준비 중입니다. 연결 후 최신 Top 5가 여기에 표시됩니다."
+        : "현재 조건에서 확인된 항공권이 없습니다. 잠시 후 다시 확인해 주세요.";
+    elements.flightDealsUpdated.textContent =
+      payload?.message ?? "표시할 최신 가격 데이터가 없습니다.";
+    return;
+  }
+
+  elements.flightDealsEmpty.hidden = true;
+  const updatedAt = new Date(payload.updatedAt);
+  elements.flightDealsUpdated.textContent = Number.isNaN(updatedAt.getTime())
+    ? "최신 조회 결과"
+    : `${updatedAt.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })} 기준`;
+
+  offers.forEach((offer, index) => {
+    const item = createElement("li", { className: "flight-deal-card" });
+    const rank = createElement("span", {
+      className: "flight-deal-card__rank",
+      text: String(index + 1),
     });
+    const content = createElement("div", {
+      className: "flight-deal-card__content",
+    });
+    const route = createElement("h3", {
+      text: `${offer.origin} → ${offer.destinationName}`,
+    });
+    const dates = createElement("p", {
+      className: "flight-deal-card__dates",
+      text: `${formatFlightDate(offer.outboundDate)} 출발 · ${formatFlightDate(offer.returnDate)} 귀국 · ${offer.nights}박 ${offer.nights + 1}일`,
+    });
+    const airlines = createElement("p", {
+      className: "flight-deal-card__airlines",
+      text: `${offer.airlines.join(" · ")} · 직항`,
+    });
+    const price = createElement("strong", {
+      className: "flight-deal-card__price",
+      text: formatFlightPrice(offer.price, offer.currency),
+    });
+    const priceLabel = createElement("span", {
+      className: "flight-deal-card__price-label",
+      text: "5인 왕복 총액",
+    });
+    const priceGroup = createElement("div", {
+      className: "flight-deal-card__price-group",
+    });
+    priceGroup.append(priceLabel, price);
+    content.append(route, dates, airlines);
+    item.append(rank, content, priceGroup);
 
-    const isFull = participants.length === PARTICIPANT_LIMIT;
-    elements.participantCount.textContent = `${participants.length}/${PARTICIPANT_LIMIT}명`;
-    elements.participantInput.disabled = isFull;
-    elements.participantAddButton.disabled = isFull;
-    elements.participantDrawButton.disabled = !isFull;
-    elements.participantInput.placeholder = isFull
-      ? "5명 등록 완료"
-      : "예: 재훈";
-  };
-
-  const addParticipant = (event) => {
-    event.preventDefault();
-
-    const result = addParticipantName(
-      participants,
-      elements.participantInput.value,
-    );
-
-    if (!result.added) {
-      const messages = {
-        empty: "이름을 입력해 주세요.",
-        duplicate: "이미 등록된 이름이에요. 다른 이름을 입력해 주세요.",
-        full: "이미 5명이 모두 등록됐어요.",
-      };
-      setMessage(messages[result.reason] ?? "이름을 추가하지 못했어요.", true);
-      elements.participantInput.focus();
-      return;
+    if (isSafeHttpUrl(offer.bookingUrl)) {
+      const link = createElement("a", {
+        className: "flight-deal-card__link",
+        text: "Google Flights에서 확인",
+      });
+      link.href = offer.bookingUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      content.append(link);
     }
 
-    participants = result.participants;
-    elements.participantInput.value = "";
-    hideResult();
-    renderParticipants();
+    elements.flightDealsList.append(item);
+  });
+}
 
-    if (participants.length === PARTICIPANT_LIMIT) {
-      setMessage("5명 등록 완료! 이제 행운의 한 명을 뽑아보세요.");
-      elements.participantDrawButton.focus();
-      return;
-    }
-
-    setMessage(
-      `${participants.at(-1)} 님을 추가했어요. ${PARTICIPANT_LIMIT - participants.length}명 남았어요.`,
+async function initializeFlightDeals(elements) {
+  try {
+    const response = await fetch(
+      `./src/flight-prices.json?updated=${Date.now()}`,
+      { cache: "no-store" },
     );
-    elements.participantInput.focus();
-  };
-
-  const drawParticipant = () => {
-    if (participants.length !== PARTICIPANT_LIMIT) return null;
-
-    const selected = selectRandomParticipant(participants);
-    if (!selected) return null;
-
-    elements.participantResult.textContent = `🎉 이번 랜덤 선택은 ${selected} 님!`;
-    elements.participantResult.hidden = false;
-    elements.participantResult.focus({ preventScroll: true });
-    return selected;
-  };
-
-  elements.participantForm.addEventListener("submit", addParticipant);
-  elements.participantDrawButton.addEventListener("click", drawParticipant);
-  renderParticipants();
-
-  return {
-    drawParticipant,
-    getParticipants: () => [...participants],
-  };
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    renderFlightDeals(await response.json(), elements);
+  } catch {
+    renderFlightDeals(
+      {
+        status: "error",
+        message: "가격 데이터를 불러오지 못했습니다.",
+        offers: [],
+      },
+      elements,
+    );
+  }
 }
 
 function getElements() {
@@ -503,14 +508,9 @@ function getElements() {
     resultContent: document.querySelector("#result-content"),
     routeTabs: document.querySelector("#route-tabs"),
     routePanel: document.querySelector("#route-panel"),
-    participantForm: document.querySelector("#participant-form"),
-    participantInput: document.querySelector("#participant-name"),
-    participantAddButton: document.querySelector("#participant-add-button"),
-    participantCount: document.querySelector("#participant-count"),
-    participantMessage: document.querySelector("#participant-message"),
-    participantList: document.querySelector("#participant-list"),
-    participantDrawButton: document.querySelector("#participant-draw-button"),
-    participantResult: document.querySelector("#participant-result"),
+    flightDealsList: document.querySelector("#flight-deals-list"),
+    flightDealsUpdated: document.querySelector("#flight-deals-updated"),
+    flightDealsEmpty: document.querySelector("#flight-deals-empty"),
   };
 }
 
@@ -522,7 +522,7 @@ export function initApp(source = destinations) {
 
   const shortlist = normalizeDestinations(source);
   renderShortlist(shortlist, elements);
-  const participantDraw = initializeParticipantDraw(elements);
+  initializeFlightDeals(elements);
 
   const draw = () => {
     const destination = selectRandomDestination(shortlist);
@@ -536,7 +536,7 @@ export function initApp(source = destinations) {
   elements.drawButton.addEventListener("click", draw);
   elements.redrawButton.addEventListener("click", draw);
 
-  return { shortlist, draw, ...participantDraw };
+  return { shortlist, draw };
 }
 
 if (typeof document !== "undefined") {

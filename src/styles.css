@@ -223,203 +223,127 @@ main {
   padding-block: clamp(3.5rem, 8vw, 6.5rem);
 }
 
-.participant-section {
+.flight-deals-section {
   margin-bottom: clamp(1.5rem, 5vw, 4rem);
   padding: clamp(1.3rem, 5vw, 3.5rem);
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(19rem, 1.15fr);
-  gap: clamp(1.5rem, 5vw, 4rem);
-  color: white;
   background:
-    radial-gradient(circle at 5% 10%, rgb(244 201 93 / 22%), transparent 17rem),
-    var(--forest-dark);
+    radial-gradient(circle at 95% 0, rgb(244 201 93 / 23%), transparent 18rem),
+    var(--surface);
+  border: 1px solid var(--line);
   border-radius: calc(var(--radius) + 0.5rem);
   box-shadow: var(--shadow);
 }
 
-.participant-section__intro {
-  align-self: center;
-  display: grid;
-  gap: 1rem;
+.flight-deals-heading {
+  margin-bottom: 1rem;
 }
 
-.participant-section .eyebrow {
-  color: var(--sun);
-}
-
-.participant-section__intro > p:last-child {
-  color: rgb(255 255 255 / 75%);
-}
-
-.participant-panel {
-  min-width: 0;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  display: grid;
-  gap: 1rem;
-  color: var(--ink);
-  background: var(--surface);
-  border-radius: var(--radius);
-}
-
-.participant-form {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.participant-form label {
+.flight-deals-badge {
+  flex: none;
+  padding: 0.45rem 0.8rem;
   color: var(--forest-dark);
-  font-size: 0.85rem;
-  font-weight: 800;
+  background: #fff4cc;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
 }
 
-.participant-form__controls {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.55rem;
+.flight-deals-description {
+  max-width: 50rem;
+  color: var(--muted);
 }
 
-.participant-form input {
-  min-width: 0;
-  min-height: 3rem;
-  padding: 0.7rem 0.9rem;
-  color: var(--ink);
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 0.8rem;
-  font: inherit;
-}
-
-.participant-form input:focus-visible {
-  outline: 3px solid var(--sun);
-  outline-offset: 2px;
-  border-color: var(--forest);
-}
-
-.participant-form button,
-.participant-list__remove {
-  border: 0;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-}
-
-.participant-form button {
-  min-height: 3rem;
-  padding-inline: 1rem;
-  color: white;
-  background: var(--forest);
-  border-radius: 0.8rem;
-}
-
-.participant-form button:disabled,
-.participant-form input:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.participant-progress {
-  min-height: 1.7rem;
+.flight-deals-meta {
+  margin-block: 1.25rem 0.85rem;
+  padding-top: 1rem;
   display: flex;
-  align-items: start;
   justify-content: space-between;
   gap: 1rem;
   color: var(--muted);
-  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
 }
 
-.participant-progress strong {
-  flex: none;
-  color: var(--forest);
-}
-
-#participant-message.is-error {
-  color: var(--accent-dark);
-  font-weight: 800;
-}
-
-.participant-list {
-  min-height: 3.25rem;
+.flight-deals-list {
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: grid;
+  gap: 0.7rem;
   list-style: none;
 }
 
-.participant-list li {
+.flight-deal-card {
   min-width: 0;
-  padding: 0.45rem 0.55rem;
-  display: inline-flex;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.45rem;
+  gap: 1rem;
   background: var(--surface-soft);
-  border-radius: 999px;
+  border: 1px solid transparent;
+  border-radius: 1rem;
 }
 
-.participant-list__number {
-  width: 1.55rem;
-  height: 1.55rem;
+.flight-deal-card:first-child {
+  background: #fff8db;
+  border-color: rgb(244 201 93 / 65%);
+}
+
+.flight-deal-card__rank {
+  width: 2.4rem;
+  height: 2.4rem;
   display: grid;
-  flex: none;
   place-items: center;
   color: white;
   background: var(--forest);
   border-radius: 50%;
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 900;
 }
 
-.participant-list__name {
-  overflow: hidden;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.flight-deal-card:first-child .flight-deal-card__rank {
+  color: var(--forest-dark);
+  background: var(--sun);
 }
 
-.participant-list__remove {
-  padding: 0.2rem 0.35rem;
+.flight-deal-card__content {
+  min-width: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.flight-deal-card__content h3 {
+  font-size: 1.05rem;
+}
+
+.flight-deal-card__dates,
+.flight-deal-card__airlines {
   color: var(--muted);
-  background: transparent;
-  border-radius: 0.4rem;
+  font-size: 0.83rem;
+}
+
+.flight-deal-card__price-group {
+  display: grid;
+  justify-items: end;
+  gap: 0.1rem;
+}
+
+.flight-deal-card__price-label {
+  color: var(--muted);
   font-size: 0.72rem;
 }
 
-.participant-list__remove:hover {
+.flight-deal-card__price {
   color: var(--accent-dark);
-  background: white;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  white-space: nowrap;
 }
 
-.participant-draw-button {
-  min-height: 3.25rem;
-  padding: 0.8rem 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  color: var(--forest-dark);
-  background: var(--sun);
-  border: 0;
-  border-radius: 0.9rem;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 900;
-}
-
-.participant-draw-button:disabled {
-  cursor: not-allowed;
-  filter: grayscale(0.5);
-  opacity: 0.45;
-}
-
-.participant-result {
-  padding: 1rem;
-  color: var(--forest-dark);
-  background: #fff7d7;
-  border: 1px solid rgb(244 201 93 / 65%);
-  border-radius: 0.9rem;
-  font-size: clamp(1.05rem, 3vw, 1.3rem);
-  font-weight: 900;
-  text-align: center;
+.flight-deal-card__link {
+  width: fit-content;
+  margin-top: 0.3rem;
+  color: var(--forest);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-underline-offset: 0.18em;
 }
 
 .section-heading {
@@ -664,10 +588,6 @@ footer {
 }
 
 @media (max-width: 58rem) {
-  .participant-section {
-    grid-template-columns: 1fr;
-  }
-
   .destination-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -702,26 +622,14 @@ footer {
     width: 100%;
   }
 
-  .participant-section {
+  .flight-deals-section {
     padding: 1rem;
     border-radius: 1.25rem;
   }
 
-  .participant-section__intro {
-    padding: 0.5rem;
-  }
-
-  .participant-section__intro br {
-    display: none;
-  }
-
-  .participant-form__controls {
-    grid-template-columns: 1fr;
-  }
-
-  .participant-form button,
-  .participant-draw-button {
-    width: 100%;
+  .flight-deals-heading,
+  .flight-deals-meta {
+    display: grid;
   }
 
   .section-heading {
@@ -730,6 +638,16 @@ footer {
 
   .destination-grid {
     grid-template-columns: 1fr;
+  }
+
+  .flight-deal-card {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .flight-deal-card__price-group {
+    grid-column: 2;
+    justify-items: start;
   }
 
   .result-section {
