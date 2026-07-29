@@ -16,6 +16,24 @@
 브라우저에는 SerpApi 키를 전달하지 않는다. 예약 실행되는 GitHub Actions가
 가격을 조회하고 정규화된 최저가 Top 5 스냅샷만 공개한다.
 
+## 상세 지도 데이터와 제공 조건
+
+- [Leaflet 공식 Quick Start](https://leafletjs.com/examples/quick-start/)
+- [OpenStreetMap 표준 타일 사용 정책](https://operations.osmfoundation.org/policies/tiles/)
+- [OpenStreetMap Nominatim 사용 정책](https://operations.osmfoundation.org/policies/nominatim/)
+
+상세 페이지는 Leaflet으로 편집된 방문 순서를 시각화하고, 표준 OSM 타일
+`https://tile.openstreetmap.org/{z}/{x}/{y}.png`을 사용한다. 지도 안에는
+`© OpenStreetMap contributors` 링크를 항상 보이게 유지한다. 표준 타일
+서비스는 최선 노력 방식이며 SLA가 없으므로, 트래픽 규모나 정책이 바뀌면
+다른 제공자로 전환할 수 있어야 한다.
+
+브라우저의 정상적인 Referer와 캐시 동작을 막지 않으며 `no-cache` 요청,
+대량 다운로드, 사전 가져오기, 오프라인 타일 저장을 구현하지 않는다. 좌표는
+콘텐츠 작성 과정에서 공개 Nominatim 정책(식별 가능한 User-Agent, 초당 1회
+이하, 결과 캐시)을 지켜 일회성으로 확인했으며, 앱은 런타임 지오코딩 요청을
+보내지 않는다.
+
 ## 직항 접근성
 
 | 후보 권역 | 확인한 공식 근거 | 검토 결과 |

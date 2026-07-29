@@ -54,4 +54,5 @@ test("the build script emits the documented Cloudflare Worker artifact paths", a
   assert.match(buildScript, /resolve\(metadata, "hosting\.json"\)/);
   assert.match(buildScript, /cp\(resolve\(root, "src"\), resolve\(client, "src"\), \{ recursive: true \}\)/);
   assert.match(buildScript, /cp\(resolve\(root, "index\.html"\), resolve\(client, "index\.html"\)\)/);
+  assert.match(buildScript, /cp\(resolve\(root, "route\.html"\), resolve\(client, "route\.html"\)\)/);
 });

@@ -5,6 +5,18 @@ import { readFile } from "node:fs/promises";
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
 const app = await readFile(new URL("../src/app.js", import.meta.url), "utf8");
+const routeHtml = await readFile(
+  new URL("../route.html", import.meta.url),
+  "utf8",
+);
+const routeCss = await readFile(
+  new URL("../src/route-detail.css", import.meta.url),
+  "utf8",
+);
+const routeApp = await readFile(
+  new URL("../src/route-detail.js", import.meta.url),
+  "utf8",
+);
 
 test("the static entry point exposes the core journey and accessibility hooks", () => {
   assert.match(html, /<html[^>]+lang=["']ko["']/i);
@@ -36,6 +48,30 @@ test("the selected route exposes a descriptive, query-driven detail link", () =>
   assert.match(app, /duration/);
   assert.match(app, /setAttribute\(\s*["']aria-label["']/);
   assert.match(css, /\.route-detail-link:focus-visible|a:focus-visible/);
+});
+
+test("the detail page keeps map controls and a textual itinerary accessible", () => {
+  assert.match(routeHtml, /<html[^>]+lang=["']ko["']/i);
+  assert.match(routeHtml, /class=["']skip-link["'][^>]+href=["']#main-content["']/);
+  assert.match(routeHtml, /id=["']route-error["'][^>]+aria-live=["']polite["']/);
+  assert.match(routeHtml, /id=["']day-filter["'][^>]+role=["']group["']/);
+  assert.match(routeHtml, /id=["']route-map["'][^>]+role=["']region["']/);
+  assert.match(routeHtml, /id=["']map-status["'][^>]+role=["']status["']/);
+  assert.match(routeHtml, /id=["']itinerary-list["']/);
+  assert.match(routeHtml, /OpenStreetMap/);
+  assert.match(routeHtml, /Leaflet/);
+  assert.match(routeHtml, /실제 내비게이션 경로가 아닙니다/);
+  assert.match(routeCss, /@media\s*\([^)]*max-width\s*:\s*760px/i);
+  assert.doesNotMatch(routeCss, /body\s*\{[^}]*min-width\s*:/is);
+});
+
+test("the map uses policy-compatible tiles without runtime geocoding or prefetch", () => {
+  assert.match(
+    routeApp,
+    /https:\/\/tile\.openstreetmap\.org\/\{z\}\/\{x\}\/\{y\}\.png/,
+  );
+  assert.match(routeApp, /OpenStreetMap<\/a> contributors/);
+  assert.doesNotMatch(routeApp, /nominatim|geocod|prefetch|no-cache/i);
 });
 
 test("the page does not advertise excluded product capabilities", () => {
