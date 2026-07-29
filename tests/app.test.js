@@ -6,6 +6,7 @@ import {
   formatRouteEstimate,
   getDefaultDuration,
   getRouteForDuration,
+  isValidTravelLink,
   normalizeDestinations,
   parseDriveEstimate,
   selectRandomDestination,
@@ -225,6 +226,30 @@ test("createRouteDetailUrl rejects incomplete route identities", () => {
   assert.equal(createRouteDetailUrl("", "2n3d"), null);
   assert.equal(createRouteDetailUrl("takamatsu-sanuki", ""), null);
   assert.equal(createRouteDetailUrl(null, "2n3d"), null);
+});
+
+test("travel reference links accept only categorized HTTPS destinations", () => {
+  assert.equal(
+    isValidTravelLink({
+      category: "관광·명소",
+      label: "공식 관광 가이드",
+      url: "https://example.com/guide",
+    }),
+    true,
+  );
+  assert.equal(
+    isValidTravelLink({
+      category: "관광·명소",
+      label: "안전하지 않은 링크",
+      url: "http://example.com/guide",
+    }),
+    false,
+  );
+  assert.equal(
+    isValidTravelLink({ category: "", label: "누락", url: "https://example.com" }),
+    false,
+  );
+  assert.equal(isValidTravelLink(null), false);
 });
 
 test("normalizeDestinations removes malformed records and duplicate ids", () => {
