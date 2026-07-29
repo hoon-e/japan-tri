@@ -8,7 +8,7 @@ import {
 } from "../src/route-detail.js";
 import { destinations } from "../src/data.js";
 
-test("getRouteSelection resolves all four canonical detail URLs", () => {
+test("getRouteSelection resolves all ten canonical detail URLs", () => {
   const selections = destinations.flatMap((destination) =>
     destination.routes.map((route) =>
       getRouteSelection(
@@ -17,7 +17,7 @@ test("getRouteSelection resolves all four canonical detail URLs", () => {
     ),
   );
 
-  assert.equal(selections.length, 4);
+  assert.equal(selections.length, 10);
   assert.ok(selections.every(Boolean));
   assert.deepEqual(
     selections.map(({ destination, route }) => [

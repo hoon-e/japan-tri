@@ -173,6 +173,12 @@ test("all curated routes expose finite at-a-glance driving totals", () => {
     { kilometers: 230, minutes: 350 },
     { kilometers: 155, minutes: 215 },
     { kilometers: 275, minutes: 380 },
+    { kilometers: 205, minutes: 285 },
+    { kilometers: 315, minutes: 430 },
+    { kilometers: 195, minutes: 275 },
+    { kilometers: 305, minutes: 435 },
+    { kilometers: 180, minutes: 270 },
+    { kilometers: 455, minutes: 590 },
   ]);
   assert.ok(
     summaries.every(
@@ -205,20 +211,26 @@ test("route metric labels remain compact and omit empty minute components", () =
   assert.equal(formatRouteEstimate(null), "표기된 운전 정보 없음");
 });
 
-test("createRouteDetailUrl addresses all four curated destination-duration routes", () => {
+test("createRouteDetailUrl addresses all ten curated destination-duration routes", () => {
   const urls = destinations.flatMap((item) =>
     item.routes.map((route) =>
       createRouteDetailUrl(item.id, route.duration),
     ),
   );
 
-  assert.equal(urls.length, 4);
-  assert.equal(new Set(urls).size, 4);
+  assert.equal(urls.length, 10);
+  assert.equal(new Set(urls).size, 10);
   assert.deepEqual(urls, [
     "./route.html?destination=takamatsu-sanuki&duration=2n3d",
     "./route.html?destination=takamatsu-sanuki&duration=3n4d",
     "./route.html?destination=yonago-san-in&duration=2n3d",
     "./route.html?destination=yonago-san-in&duration=3n4d",
+    "./route.html?destination=matsuyama-ehime&duration=2n3d",
+    "./route.html?destination=matsuyama-ehime&duration=3n4d",
+    "./route.html?destination=saga-ureshino-arita&duration=2n3d",
+    "./route.html?destination=saga-ureshino-arita&duration=3n4d",
+    "./route.html?destination=miyazaki-takachiho-nichinan&duration=2n3d",
+    "./route.html?destination=miyazaki-takachiho-nichinan&duration=3n4d",
   ]);
 });
 
