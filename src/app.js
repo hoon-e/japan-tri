@@ -60,7 +60,7 @@ export function parseDriveEstimate(drive) {
 
   const kmMatch = drive.match(/약\s*([\d,.]+)\s*km/i);
   const hoursMatch = drive.match(/(\d+)\s*시간(?:\s*(\d+)\s*분)?/);
-  const minutesOnlyMatch = drive.match(/약\s*(\d+)\s*분/);
+  const minutesOnlyMatch = drive.match(/(?:^|[·\s])(\d+)\s*분/);
 
   const kilometers = kmMatch ? Number(kmMatch[1].replaceAll(",", "")) : null;
   if (kilometers !== null && !Number.isFinite(kilometers)) return null;
@@ -79,22 +79,36 @@ export function parseDriveEstimate(drive) {
 }
 
 export function summarizeRouteMetrics(route) {
-  const metrics = (route?.days ?? []).reduce(
+  const days = route?.days ?? [];
+  if (days.length === 0) return null;
+
+  const metrics = days.reduce(
     (accumulator, day) => {
       const estimate = parseDriveEstimate(day.drive);
       if (Number.isFinite(estimate?.kilometers)) {
         accumulator.kilometers += estimate.kilometers;
+      } else {
+        accumulator.hasAllDistances = false;
       }
       if (Number.isFinite(estimate?.minutes)) {
         accumulator.minutes += estimate.minutes;
+      } else {
+        accumulator.hasAllDurations = false;
       }
       return accumulator;
     },
-    { kilometers: 0, minutes: 0 },
+    {
+      kilometers: 0,
+      minutes: 0,
+      hasAllDistances: true,
+      hasAllDurations: true,
+    },
   );
 
-  if (metrics.kilometers === 0 && metrics.minutes === 0) return null;
-  return metrics;
+  const kilometers = metrics.hasAllDistances ? metrics.kilometers : null;
+  const minutes = metrics.hasAllDurations ? metrics.minutes : null;
+  if (kilometers === null && minutes === null) return null;
+  return { kilometers, minutes };
 }
 
 export function formatRouteEstimate(metrics) {

@@ -819,6 +819,13 @@ footer {
   }
 }
 
+@media (max-width: 24rem) {
+  .result-facts,
+  .route-dashboard__facts {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -182,6 +182,15 @@ test("all curated routes expose finite at-a-glance driving totals", () => {
     ),
   );
   assert.equal(summarizeRouteMetrics({ days: [{ drive: "확인 필요" }] }), null);
+  assert.deepEqual(
+    summarizeRouteMetrics({
+      days: [
+        { drive: "약 30km · 50분" },
+        { drive: "약 40km · 시간 확인 필요" },
+      ],
+    }),
+    { kilometers: 70, minutes: null },
+  );
 });
 
 test("route metric labels remain compact and omit empty minute components", () => {
