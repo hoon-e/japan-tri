@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="인천·김포에서 직항으로 닿는 일본 소도시 드라이브 후보를 비교하고 무작위로 여행지를 골라보세요."
+    />
+    <title>다음 일본 로드트립은 어디?</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">본문 바로가기</a>
+
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="일본 소도시 로드트립 홈">
+        <span aria-hidden="true">🚙</span>
+        <span>로컬 드라이브</span>
+      </a>
+      <p>인천·김포 출발 · 렌터카 소도시 여행</p>
+    </header>
+
+    <main id="main-content">
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">후보는 투명하게, 결정은 가볍게</p>
+        <h1 id="hero-title">다음 일본 로드트립은<br />어디로 떠날까요?</h1>
+        <p>
+          직항 접근성과 운전 동선을 살펴 엄선한 후보입니다. 먼저 비교하고,
+          마음이 준비되면 한 곳을 뽑아보세요.
+        </p>
+        <button id="draw-button" class="primary-button" type="button">
+          <span aria-hidden="true">🎲</span>
+          여행지 무작위로 뽑기
+        </button>
+      </section>
+
+      <section class="shortlist-section" aria-labelledby="shortlist-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">공개된 적격 후보군</p>
+            <h2 id="shortlist-title">어디가 뽑힐 수 있나요?</h2>
+          </div>
+          <p id="shortlist-count" class="candidate-count" aria-live="polite"></p>
+        </div>
+
+        <div id="destination-list" class="destination-grid"></div>
+        <p id="empty-state" class="empty-state" hidden>
+          지금은 보여드릴 수 있는 여행지가 없습니다. 후보 데이터가 준비되면
+          다시 뽑을 수 있어요.
+        </p>
+      </section>
+
+      <section
+        id="result"
+        class="result-section"
+        aria-labelledby="result-title"
+        aria-live="polite"
+        aria-atomic="false"
+        tabindex="-1"
+        hidden
+      >
+        <p class="eyebrow">이번 여행의 선택</p>
+        <h2 id="result-title">선정된 여행지</h2>
+        <div id="result-content"></div>
+
+        <section class="route-section" aria-labelledby="route-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">기간별 검수 루트</p>
+              <h3 id="route-title">몇 박으로 떠날까요?</h3>
+            </div>
+          </div>
+          <div
+            id="route-tabs"
+            class="route-tabs"
+            role="tablist"
+            aria-label="여행 기간 선택"
+          ></div>
+          <div id="route-panel"></div>
+        </section>
+
+        <button id="redraw-button" class="secondary-button" type="button">
+          다른 여행지 다시 뽑기
+        </button>
+      </section>
+
+      <noscript>
+        <p class="empty-state">
+          여행지 추첨과 기간 전환을 사용하려면 브라우저에서 JavaScript를
+          활성화해 주세요.
+        </p>
+      </noscript>
+    </main>
+
+    <footer>
+      <p>
+        항공편과 도로 상황은 바뀔 수 있습니다. 예약 전 항공사와 현지 공식
+        안내를 확인하세요.
+      </p>
+    </footer>
+  </body>
+</html>
