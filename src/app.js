@@ -7,10 +7,48 @@ const REQUIRED_DESTINATION_FIELDS = [
   "summary",
   "directFlightReason",
   "driveReason",
+  "region",
+  "image",
+  "recommendedDuration",
+  "seasons",
 ];
 
+const REQUIRED_ROUTE_FIELDS = ["duration", "label", "summary"];
+
+function isNonEmptyString(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isValidRouteDay(day) {
+  return (
+    day &&
+    typeof day === "object" &&
+    Number.isInteger(day.day) &&
+    isNonEmptyString(day.title) &&
+    isNonEmptyString(day.base) &&
+    isNonEmptyString(day.drive) &&
+    Array.isArray(day.stops) &&
+    day.stops.length > 0 &&
+    day.stops.every(isNonEmptyString)
+  );
+}
+
+function isValidRoute(route) {
+  return (
+    route &&
+    typeof route === "object" &&
+    REQUIRED_ROUTE_FIELDS.every((field) => isNonEmptyString(route[field])) &&
+    Array.isArray(route.days) &&
+    route.days.length > 0 &&
+    route.days.every(isValidRouteDay)
+  );
+}
+
 /**
- * Return only destinations that satisfy the minimum UI contract.
+ * Return unique, addressable destination records.
+ *
+ * Detailed content integrity is validated independently so this boundary can
+ * also normalize lightweight records in unit tests and future data tooling.
  * The function does not mutate the supplied array.
  */
 export function normalizeDestinations(items) {
@@ -21,23 +59,20 @@ export function normalizeDestinations(items) {
   return items.filter((item) => {
     if (!item || typeof item !== "object") return false;
 
-    const hasRequiredText = REQUIRED_DESTINATION_FIELDS.every(
-      (field) => typeof item[field] === "string" && item[field].trim().length > 0,
-    );
-    const hasRoutes =
+    const hasIdentity =
+      REQUIRED_DESTINATION_FIELDS.every((field) => isNonEmptyString(item[field])) &&
+      typeof item.imageAlt === "string" &&
+      Array.isArray(item.highlights) &&
+      item.highlights.length > 0 &&
+      item.highlights.every(isNonEmptyString) &&
+      Array.isArray(item.drivingNotes) &&
+      item.drivingNotes.length > 0 &&
+      item.drivingNotes.every(isNonEmptyString) &&
       Array.isArray(item.routes) &&
-      item.routes.length > 0 &&
-      item.routes.every(
-        (route) =>
-          route &&
-          typeof route.duration === "string" &&
-          route.duration.length > 0 &&
-          typeof route.label === "string" &&
-          Array.isArray(route.days) &&
-          route.days.length > 0,
-      );
+      item.routes.length >= 2 &&
+      item.routes.every(isValidRoute);
 
-    if (!hasRequiredText || !hasRoutes || seenIds.has(item.id)) return false;
+    if (!hasIdentity || seenIds.has(item.id)) return false;
 
     seenIds.add(item.id);
     return true;
@@ -151,6 +186,9 @@ function renderRoute(route, panel) {
   panel.replaceChildren();
 
   if (!route) {
+    panel.removeAttribute("role");
+    panel.removeAttribute("aria-labelledby");
+    panel.removeAttribute("tabindex");
     panel.append(
       createElement("p", {
         className: "empty-state",
@@ -328,7 +366,9 @@ export function initApp(source = destinations) {
   const draw = () => {
     const destination = selectRandomDestination(shortlist);
     renderResult(destination, elements);
-    elements.result.focus({ preventScroll: true });
+    if (elements.result instanceof HTMLElement) {
+      elements.result.focus({ preventScroll: true });
+    }
     elements.result.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
