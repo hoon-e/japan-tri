@@ -211,7 +211,7 @@ function renderDayFilter(route, layers, filter) {
   });
 }
 
-function renderMap(route, elements) {
+async function renderMap(route, elements) {
   renderLegend(route, elements.legendList);
   elements.mapStatus.textContent = "지도를 불러오는 중입니다.";
 
@@ -274,7 +274,7 @@ function renderRouteDetail(selection, elements) {
       createElement("li", { text: note }),
     ),
   );
-  renderMap(route, elements);
+  void renderMap(route, elements);
 }
 
 function init() {
