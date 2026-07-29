@@ -85,6 +85,14 @@ test("selectRandomDestination safely returns null for an empty or invalid shortl
   assert.equal(selectRandomDestination(null, () => 0.5), null);
 });
 
+test("selectRandomDestination safely rejects invalid random generators", () => {
+  const shortlist = [{ id: "a" }, { id: "b" }];
+
+  assert.equal(selectRandomDestination(shortlist, null), null);
+  assert.equal(selectRandomDestination(shortlist, () => Number.NaN), null);
+  assert.equal(selectRandomDestination(shortlist, () => Number.POSITIVE_INFINITY), null);
+});
+
 test("selectRandomDestination handles an out-of-range random sample defensively", () => {
   const shortlist = [{ id: "a" }, { id: "b" }];
 
@@ -107,16 +115,15 @@ test("getDefaultDuration selects the first available route duration", () => {
 test("normalizeDestinations removes malformed records and duplicate ids", () => {
   const validA = createValidDestination("a");
   const validB = createValidDestination("b");
+  const source = [validA, null, { name: "no id" }, validA, validB];
 
-  assert.deepEqual(
-    normalizeDestinations([
-      validA,
-      null,
-      { name: "no id" },
-      validA,
-      validB,
-    ]),
-    [validA, validB],
-  );
+  assert.deepEqual(normalizeDestinations(source), [validA, validB]);
+  assert.deepEqual(source, [validA, null, { name: "no id" }, validA, validB]);
   assert.deepEqual(normalizeDestinations(null), []);
+});
+
+test("initApp returns null when the DOM is unavailable", async () => {
+  const { initApp } = await import("../src/app.js");
+
+  assert.equal(initApp(), null);
 });

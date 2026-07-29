@@ -9,6 +9,7 @@ const requiredTextFields = [
   "region",
   "airport",
   "image",
+  "imageAlt",
   "summary",
   "directFlightReason",
   "driveReason",
@@ -32,6 +33,8 @@ test("the public shortlist contains unique, fully described destinations", () =>
     assert.ok(destination.directFlightReason.match(/인천|김포/));
     assert.ok(destination.highlights.length >= 2);
     assert.ok(destination.drivingNotes.length >= 1);
+    assert.ok(destination.highlights.every((item) => item.trim().length > 0));
+    assert.ok(destination.drivingNotes.every((item) => item.trim().length > 0));
   }
 });
 
@@ -55,6 +58,7 @@ test("every destination has complete, internally consistent duration routes", ()
         assert.ok(day.drive);
         assert.ok(Array.isArray(day.stops));
         assert.ok(day.stops.length >= 1);
+        assert.ok(day.stops.every((stop) => typeof stop === "string" && stop.trim()));
       });
     }
   }
