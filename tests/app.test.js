@@ -19,6 +19,24 @@ const destination = {
   routes,
 };
 
+function createValidDestination(id) {
+  return {
+    id,
+    name: `목적지 ${id}`,
+    region: "테스트 권역",
+    airport: "테스트 공항",
+    image: "https://example.com/image.jpg",
+    summary: "테스트 목적지 설명",
+    directFlightReason: "인천 직항 접근성 테스트",
+    driveReason: "렌터카 이동 테스트",
+    highlights: ["명소 A", "명소 B"],
+    recommendedDuration: "2n3d",
+    seasons: "봄과 가을",
+    drivingNotes: ["안전 운전"],
+    routes,
+  };
+}
+
 test("selectRandomDestination only returns members of the supplied shortlist", () => {
   const shortlist = [{ id: "a" }, { id: "b" }, { id: "c" }];
 
@@ -60,8 +78,8 @@ test("getDefaultDuration selects the first available route duration", () => {
 });
 
 test("normalizeDestinations removes malformed records and duplicate ids", () => {
-  const validA = { id: "a", name: "A", routes: [] };
-  const validB = { id: "b", name: "B", routes: [] };
+  const validA = createValidDestination("a");
+  const validB = createValidDestination("b");
 
   assert.deepEqual(
     normalizeDestinations([
