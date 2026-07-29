@@ -2,6 +2,12 @@ import { destinations } from "./data.js";
 
 const DAY_COLORS = ["#c9472d", "#1f684f", "#3567a8", "#8b4c9c"];
 const VALID_DURATIONS = new Set(["2n3d", "3n4d"]);
+const JAPAN_BOUNDS = {
+  minLatitude: 24,
+  maxLatitude: 46,
+  minLongitude: 122,
+  maxLongitude: 146,
+};
 
 function isFiniteCoordinate(value) {
   return Number.isFinite(value);
@@ -15,10 +21,10 @@ export function isValidMapStop(stop) {
     Array.isArray(stop.coordinates) &&
     stop.coordinates.length === 2 &&
     stop.coordinates.every(isFiniteCoordinate) &&
-    stop.coordinates[0] >= -90 &&
-    stop.coordinates[0] <= 90 &&
-    stop.coordinates[1] >= -180 &&
-    stop.coordinates[1] <= 180
+    stop.coordinates[0] >= JAPAN_BOUNDS.minLatitude &&
+    stop.coordinates[0] <= JAPAN_BOUNDS.maxLatitude &&
+    stop.coordinates[1] >= JAPAN_BOUNDS.minLongitude &&
+    stop.coordinates[1] <= JAPAN_BOUNDS.maxLongitude
   );
 }
 
