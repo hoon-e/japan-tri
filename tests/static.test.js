@@ -62,6 +62,10 @@ test("the detail page keeps map controls and a textual itinerary accessible", ()
   assert.match(routeHtml, /Leaflet/);
   assert.match(routeHtml, /실제 내비게이션 경로가 아닙니다/);
   assert.match(routeCss, /@media\s*\([^)]*max-width\s*:\s*760px/i);
+  assert.match(
+    routeCss,
+    /\[hidden\]\s*\{[^}]*display\s*:\s*none\s*!important[^}]*\}/is,
+  );
   assert.doesNotMatch(routeCss, /body\s*\{[^}]*min-width\s*:/is);
 });
 
