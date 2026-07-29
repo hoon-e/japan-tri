@@ -26,3 +26,17 @@ test("the mobile stylesheet includes a narrow-screen layout without forced page 
 test("the page does not advertise excluded product capabilities", () => {
   assert.doesNotMatch(html, /회원가입|로그인|결제하기|예약하기|AI\s*채팅/i);
 });
+
+test("the hosting worker delegates requests to the platform asset binding", async () => {
+  const { default: worker } = await import("../hosting/worker.js");
+  const expected = new Response("ok");
+  const response = await worker.fetch(new Request("https://example.com/"), {
+    ASSETS: { fetch: () => expected },
+  });
+
+  assert.equal(response, expected);
+  assert.equal(
+    (await worker.fetch(new Request("https://example.com/"), {})).status,
+    503,
+  );
+});
