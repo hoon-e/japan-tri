@@ -4,10 +4,4 @@ dist/
 coverage/
 .playwright/
 test-results/
-.omx/logs/
-.omx/runtime/
-.omx/state/
-.omx/metrics.json
-.omx/tmux-hook.json
-.omx/team/
-.omx/reports/
+.omx/
