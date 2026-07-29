@@ -36,6 +36,70 @@
         </button>
       </section>
 
+      <section
+        id="participant-section"
+        class="participant-section"
+        aria-labelledby="participant-title"
+      >
+        <div class="participant-section__intro">
+          <p class="eyebrow">우리끼리 랜덤 뽑기</p>
+          <h2 id="participant-title">함께 가는 5명 중<br />오늘의 행운 담당은?</h2>
+          <p>
+            이름을 한 명씩 등록해 주세요. 같은 이름은 두 번 넣을 수 없고,
+            정확히 5명이 모이면 한 명을 랜덤으로 뽑을 수 있어요.
+          </p>
+        </div>
+
+        <div class="participant-panel">
+          <form id="participant-form" class="participant-form">
+            <label for="participant-name">여행자 이름</label>
+            <div class="participant-form__controls">
+              <input
+                id="participant-name"
+                name="participant-name"
+                type="text"
+                maxlength="20"
+                autocomplete="off"
+                placeholder="예: 재훈"
+                required
+              />
+              <button id="participant-add-button" type="submit">추가하기</button>
+            </div>
+          </form>
+
+          <div class="participant-progress">
+            <p id="participant-message" aria-live="polite">
+              첫 번째 여행자를 등록해 주세요.
+            </p>
+            <strong id="participant-count">0/5명</strong>
+          </div>
+
+          <ol
+            id="participant-list"
+            class="participant-list"
+            aria-label="등록된 여행자"
+          ></ol>
+
+          <button
+            id="participant-draw-button"
+            class="participant-draw-button"
+            type="button"
+            disabled
+          >
+            <span aria-hidden="true">✨</span>
+            5명 중 한 명 뽑기
+          </button>
+
+          <p
+            id="participant-result"
+            class="participant-result"
+            role="status"
+            aria-live="polite"
+            hidden
+          ></p>
+        </div>
+      </section>
+
       <section class="shortlist-section" aria-labelledby="shortlist-title">
         <div class="section-heading">
           <div>

@@ -1,5 +1,7 @@
 import { destinations } from "./data.js";
 
+export const PARTICIPANT_LIMIT = 5;
+
 const REQUIRED_DESTINATION_FIELDS = [
   "id",
   "name",
@@ -44,6 +46,60 @@ function isValidRoute(route) {
   );
 }
 
+function selectRandomItem(items, random = Math.random) {
+  const candidates = Array.isArray(items) ? items : [];
+  if (candidates.length === 0 || typeof random !== "function") return null;
+
+  const randomValue = Number(random());
+  if (!Number.isFinite(randomValue)) return null;
+
+  const boundedValue = Math.min(Math.max(randomValue, 0), 1 - Number.EPSILON);
+  return candidates[Math.floor(boundedValue * candidates.length)] ?? null;
+}
+
+export function normalizeParticipantName(value) {
+  if (typeof value !== "string") return "";
+  return value.normalize("NFKC").trim().replace(/\s+/g, " ");
+}
+
+function getParticipantKey(name) {
+  return normalizeParticipantName(name).toLocaleLowerCase("ko-KR");
+}
+
+export function addParticipantName(
+  participants,
+  rawName,
+  limit = PARTICIPANT_LIMIT,
+) {
+  const safeLimit =
+    Number.isInteger(limit) && limit > 0 ? limit : PARTICIPANT_LIMIT;
+  const current = Array.isArray(participants) ? [...participants] : [];
+  const name = normalizeParticipantName(rawName);
+
+  if (!name) {
+    return { participants: current, added: false, reason: "empty" };
+  }
+
+  if (current.length >= safeLimit) {
+    return { participants: current, added: false, reason: "full" };
+  }
+
+  const key = getParticipantKey(name);
+  if (current.some((participant) => getParticipantKey(participant) === key)) {
+    return { participants: current, added: false, reason: "duplicate" };
+  }
+
+  return {
+    participants: [...current, name],
+    added: true,
+    reason: null,
+  };
+}
+
+export function selectRandomParticipant(participants, random = Math.random) {
+  return selectRandomItem(participants, random);
+}
+
 /**
  * Return unique, addressable destination records.
  *
@@ -76,14 +132,7 @@ export function normalizeDestinations(items) {
  * Invalid or empty input safely returns null.
  */
 export function selectRandomDestination(items, random = Math.random) {
-  const shortlist = Array.isArray(items) ? items : [];
-  if (shortlist.length === 0 || typeof random !== "function") return null;
-
-  const randomValue = Number(random());
-  if (!Number.isFinite(randomValue)) return null;
-
-  const boundedValue = Math.min(Math.max(randomValue, 0), 1 - Number.EPSILON);
-  return shortlist[Math.floor(boundedValue * shortlist.length)] ?? null;
+  return selectRandomItem(items, random);
 }
 
 export function getRouteForDuration(destination, duration) {
@@ -332,6 +381,117 @@ function renderResult(destination, elements) {
   elements.result.hidden = false;
 }
 
+function initializeParticipantDraw(elements) {
+  let participants = [];
+
+  const setMessage = (message, isError = false) => {
+    elements.participantMessage.textContent = message;
+    elements.participantMessage.classList.toggle("is-error", isError);
+  };
+
+  const hideResult = () => {
+    elements.participantResult.hidden = true;
+    elements.participantResult.textContent = "";
+  };
+
+  const renderParticipants = () => {
+    elements.participantList.replaceChildren();
+
+    participants.forEach((name, index) => {
+      const item = createElement("li");
+      const number = createElement("span", {
+        className: "participant-list__number",
+        text: String(index + 1),
+      });
+      const label = createElement("span", {
+        className: "participant-list__name",
+        text: name,
+      });
+      const removeButton = createElement("button", {
+        className: "participant-list__remove",
+        text: "삭제",
+      });
+      removeButton.type = "button";
+      removeButton.setAttribute("aria-label", `${name} 삭제`);
+      removeButton.addEventListener("click", () => {
+        participants = participants.filter((_, itemIndex) => itemIndex !== index);
+        hideResult();
+        renderParticipants();
+        setMessage(`${name} 님을 명단에서 뺐어요.`);
+        elements.participantInput.focus();
+      });
+      item.append(number, label, removeButton);
+      elements.participantList.append(item);
+    });
+
+    const isFull = participants.length === PARTICIPANT_LIMIT;
+    elements.participantCount.textContent = `${participants.length}/${PARTICIPANT_LIMIT}명`;
+    elements.participantInput.disabled = isFull;
+    elements.participantAddButton.disabled = isFull;
+    elements.participantDrawButton.disabled = !isFull;
+    elements.participantInput.placeholder = isFull
+      ? "5명 등록 완료"
+      : "예: 재훈";
+  };
+
+  const addParticipant = (event) => {
+    event.preventDefault();
+
+    const result = addParticipantName(
+      participants,
+      elements.participantInput.value,
+    );
+
+    if (!result.added) {
+      const messages = {
+        empty: "이름을 입력해 주세요.",
+        duplicate: "이미 등록된 이름이에요. 다른 이름을 입력해 주세요.",
+        full: "이미 5명이 모두 등록됐어요.",
+      };
+      setMessage(messages[result.reason] ?? "이름을 추가하지 못했어요.", true);
+      elements.participantInput.focus();
+      return;
+    }
+
+    participants = result.participants;
+    elements.participantInput.value = "";
+    hideResult();
+    renderParticipants();
+
+    if (participants.length === PARTICIPANT_LIMIT) {
+      setMessage("5명 등록 완료! 이제 행운의 한 명을 뽑아보세요.");
+      elements.participantDrawButton.focus();
+      return;
+    }
+
+    setMessage(
+      `${participants.at(-1)} 님을 추가했어요. ${PARTICIPANT_LIMIT - participants.length}명 남았어요.`,
+    );
+    elements.participantInput.focus();
+  };
+
+  const drawParticipant = () => {
+    if (participants.length !== PARTICIPANT_LIMIT) return null;
+
+    const selected = selectRandomParticipant(participants);
+    if (!selected) return null;
+
+    elements.participantResult.textContent = `🎉 이번 랜덤 선택은 ${selected} 님!`;
+    elements.participantResult.hidden = false;
+    elements.participantResult.focus({ preventScroll: true });
+    return selected;
+  };
+
+  elements.participantForm.addEventListener("submit", addParticipant);
+  elements.participantDrawButton.addEventListener("click", drawParticipant);
+  renderParticipants();
+
+  return {
+    drawParticipant,
+    getParticipants: () => [...participants],
+  };
+}
+
 function getElements() {
   return {
     destinationList: document.querySelector("#destination-list"),
@@ -343,6 +503,14 @@ function getElements() {
     resultContent: document.querySelector("#result-content"),
     routeTabs: document.querySelector("#route-tabs"),
     routePanel: document.querySelector("#route-panel"),
+    participantForm: document.querySelector("#participant-form"),
+    participantInput: document.querySelector("#participant-name"),
+    participantAddButton: document.querySelector("#participant-add-button"),
+    participantCount: document.querySelector("#participant-count"),
+    participantMessage: document.querySelector("#participant-message"),
+    participantList: document.querySelector("#participant-list"),
+    participantDrawButton: document.querySelector("#participant-draw-button"),
+    participantResult: document.querySelector("#participant-result"),
   };
 }
 
@@ -354,6 +522,7 @@ export function initApp(source = destinations) {
 
   const shortlist = normalizeDestinations(source);
   renderShortlist(shortlist, elements);
+  const participantDraw = initializeParticipantDraw(elements);
 
   const draw = () => {
     const destination = selectRandomDestination(shortlist);
@@ -367,7 +536,7 @@ export function initApp(source = destinations) {
   elements.drawButton.addEventListener("click", draw);
   elements.redrawButton.addEventListener("click", draw);
 
-  return { shortlist, draw };
+  return { shortlist, draw, ...participantDraw };
 }
 
 if (typeof document !== "undefined") {

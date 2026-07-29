@@ -14,6 +14,11 @@ test("the static entry point exposes the core journey and accessibility hooks", 
   assert.match(html, /id=["']route-tabs["'][^>]+role=["']tablist["']/);
   assert.match(html, /id=["']route-panel["']/);
   assert.match(html, /id=["']empty-state["']/);
+  assert.match(html, /id=["']participant-form["']/);
+  assert.match(html, /id=["']participant-name["']/);
+  assert.match(html, /id=["']participant-list["']/);
+  assert.match(html, /id=["']participant-draw-button["'][^>]+disabled/);
+  assert.match(html, /id=["']participant-result["'][^>]+aria-live=/);
   assert.match(html, /<script[^>]+type=["']module["'][^>]+src=["'][^"']*src\/app\.js["']/);
 });
 
