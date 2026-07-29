@@ -37,12 +37,24 @@
 
 | 후보 권역 | 확인한 공식 근거 | 검토 결과 |
 | --- | --- | --- |
-| 다카마쓰·사누키 | [다카마쓰 공항 국제선 시간표](https://www.takamatsu-airport.com/timetable/int.php) | 서울 노선의 2026년 7월 운항 정보를 공항 공식 시간표에서 확인 |
-| 요나고·산인 | [요나고 기타로 공항 서울선 시간표](https://www.yonago-air.com/flight/seoul) | 2026년 3월 29일~10월 24일 서울 노선을 공항 공식 시간표에서 확인 |
+| 다카마쓰·사누키 | [다카마쓰 공항 국제선 시간표](https://www.takamatsu-airport.com/timetable/int.php) | 2026년 7월 서울(인천)→다카마쓰 직항 RS741·LJ359가 매일 편성된 것을 공항 공식 시간표에서 확인. 일부 날짜 운휴와 예고 없는 변경 가능성도 함께 명시됨 |
+| 요나고·산인 | [요나고 기타로 공항 서울선 시간표](https://www.yonago-air.com/flight/seoul) | 2026년 3월 29일~10월 24일 서울(인천)→요나고 직항 RS745가 월·수·목·금·일 편성된 것을 공항 공식 시간표에서 확인 |
 
 후보 설명은 “인천·김포 중 한 곳에서 직항으로 접근 가능”하다는 제품 기준을
 따른다. 두 후보의 현재 근거는 모두 인천 노선이며, 김포 노선을 운항한다고
 표현하지 않는다.
+
+## 관광지·루트 편집 근거
+
+| 후보 권역 | 공식 관광 근거 | 앱에서 사용하는 범위 |
+| --- | --- | --- |
+| 다카마쓰·사누키 | [가가와현 관광협회 공식 사이트](https://www.my-kagawa.jp/en), [고토히라궁](https://www.my-kagawa.jp/en/see-and-do/10078), [치치부가하마](https://www.my-kagawa.jp/en/see-and-do/10090), [마루가메 성](https://www.my-kagawa.jp/en/see-and-do/10084) | 공개 후보 카드의 대표 방문지와 가가와 서부를 잇는 편집 루트의 지역 적합성 확인 |
+| 요나고·산인 | [돗토리현 공식 관광 사이트](https://www.tottori-tour.jp/en/), [사카이미나토 미즈키 시게루 로드](https://www.tottori-tour.jp/en/sightseeing/835/), [다이센](https://www.tottori-tour.jp/en/sightseeing/844/), [마쓰에시 공식 관광 가이드](https://www.visit-matsue.com/discover/city_centre), [신지호](https://www.visit-matsue.com/discover/city_centre/lake_shinji/overview_of_lake_shinji) | 공개 후보 카드의 대표 방문지와 요나고–마쓰에 호수권을 잇는 편집 루트의 지역 적합성 확인 |
+
+위 관광 자료는 장소의 존재와 권역별 대표성을 확인하는 근거다. 일자별 이동
+거리·시간, 숙박 거점, 방문 순서는 공식 관광청의 확정 일정이 아니라 이
+저장소에서 작성한 비교용 초안이다. 영업시간·입장 조건·계절 통제는 출발 전에
+각 시설과 도로 운영 주체의 최신 안내를 다시 확인한다.
 
 ## 렌터카·드라이브 콘텐츠 경계
 

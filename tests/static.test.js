@@ -17,6 +17,14 @@ const routeApp = await readFile(
   new URL("../src/route-detail.js", import.meta.url),
   "utf8",
 );
+const contentSources = await readFile(
+  new URL("../docs/content-sources.md", import.meta.url),
+  "utf8",
+);
+const travelOverview = await readFile(
+  new URL("../docs/travel-overview.md", import.meta.url),
+  "utf8",
+);
 
 test("the static entry point exposes the core journey and accessibility hooks", () => {
   assert.match(html, /<html[^>]+lang=["']ko["']/i);
@@ -162,6 +170,26 @@ test("the map uses policy-compatible tiles without runtime geocoding or prefetch
   );
   assert.match(routeApp, /OpenStreetMap<\/a> contributors/);
   assert.doesNotMatch(routeApp, /nominatim|geocod|prefetch|no-cache/i);
+});
+
+test("content documentation keeps official flight and tourism evidence", () => {
+  assert.match(contentSources, /확인일:\s*\*\*2026-07-29\*\*/);
+  assert.match(contentSources, /takamatsu-airport\.com\/timetable\/int\.php/);
+  assert.match(contentSources, /yonago-air\.com\/flight\/seoul/);
+  assert.match(contentSources, /my-kagawa\.jp\/en/);
+  assert.match(contentSources, /tottori-tour\.jp\/en/);
+  assert.match(contentSources, /visit-matsue\.com/);
+  assert.match(contentSources, /김포 노선을 운항한다고\s*\n표현하지 않는다/);
+  assert.match(contentSources, /비교용 초안/);
+});
+
+test("the verification guide protects random, detail, mobile, and accessibility flows", () => {
+  assert.match(travelOverview, /## 9\) 회귀 검증 계약/);
+  assert.match(travelOverview, /결정적 RNG/);
+  assert.match(travelOverview, /destination × duration/);
+  assert.match(travelOverview, /폭 375px/);
+  assert.match(travelOverview, /방향키\/Home\/End/);
+  assert.match(travelOverview, /npm run check/);
 });
 
 test("the page does not advertise excluded product capabilities", () => {
