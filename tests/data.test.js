@@ -99,12 +99,12 @@ test("every destination has complete, internally consistent duration routes", ()
   assert.deepEqual(
     [...routeIds].sort(),
     [
+      "kagoshima-kirishima/2n3d",
+      "kagoshima-kirishima/3n4d",
       "matsuyama-ehime/2n3d",
       "matsuyama-ehime/3n4d",
-      "miyazaki-takachiho-nichinan/2n3d",
-      "miyazaki-takachiho-nichinan/3n4d",
-      "saga-ureshino-arita/2n3d",
-      "saga-ureshino-arita/3n4d",
+      "miyazaki-hyuga/2n3d",
+      "miyazaki-hyuga/3n4d",
       "takamatsu-sanuki/2n3d",
       "takamatsu-sanuki/3n4d",
       "yonago-san-in/2n3d",

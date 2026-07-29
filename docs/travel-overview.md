@@ -119,7 +119,7 @@
 | 영역 | 자동 검증 | 통과 조건 |
 | --- | --- | --- |
 | 무작위 선택 | `tests/app.test.js`, `tests/data.test.js` | 결정적 RNG가 공개 shortlist의 첫·마지막 후보를 선택하고 빈/잘못된 입력은 안전하게 거부 |
-| 상세 흐름 | `tests/app.test.js`, `tests/route-detail.test.js` | 네 개의 `destination × duration` 조합이 고유 상세 URL을 만들고 같은 쿼리로 복원 |
+| 상세 흐름 | `tests/app.test.js`, `tests/route-detail.test.js` | 열 개의 `destination × duration` 조합이 고유 상세 URL을 만들고 같은 쿼리로 복원 |
 | 모바일 | `tests/static.test.js` | 40rem 이하에서 후보·항공권 카드가 한 열로 전환되고 주요 버튼/링크가 전체 폭, 탭·외부 링크 터치 높이가 44px 이상 |
 | 접근성 | `tests/static.test.js` | 건너뛰기 링크, 결과 `aria-live`, 탭의 ARIA/방향키/Home/End 계약, 상세 페이지의 텍스트 일정 대체 경로 유지 |
 | 외부 서비스 실패 | `tests/static.test.js` | Leaflet 로딩이 비동기이며 지도 타일/CDN이 실패해도 일자별 텍스트 일정이 먼저 렌더링 |
@@ -127,7 +127,7 @@
 
 최종 게이트는 `npm run check`다. 이 명령은 무의존성 구문 검사(`typecheck`,
 `lint`), 전체 Node 테스트, Cloudflare Worker 호환 정적 산출물 빌드를
-순서대로 실행한다. 브라우저 자동화가 없는 환경에서는 정적 계약과 네 개의
+순서대로 실행한다. 브라우저 자동화가 없는 환경에서는 정적 계약과 열 개의
 상세 URL HTTP 응답을 확인하고, 브라우저 사용이 가능한 배포 전 검수에서는
 폭 375px와 데스크톱에서 추첨 → 기간 탭 키보드 이동 → 상세 링크 열기까지
 한 차례 확인한다.

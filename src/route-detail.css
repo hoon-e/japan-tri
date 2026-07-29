@@ -101,7 +101,7 @@ h3 {
 .site-header,
 main,
 footer {
-  width: min(100% - 2rem, var(--content));
+  width: min(calc(100% - 2rem), var(--content));
   margin-inline: auto;
 }
 
@@ -414,7 +414,7 @@ footer {
   .site-header,
   main,
   footer {
-    width: min(100% - 1.25rem, var(--content));
+    width: min(calc(100% - 1.25rem), var(--content));
   }
 
   .route-hero,

@@ -11,6 +11,9 @@
 - [Google Flights](https://www.google.com/travel/flights?hl=ko)
 - [스카이스캐너 서울–다카마쓰](https://www.skyscanner.co.kr/routes/sela/tak/seoul-to-takamatsu.html)
 - [스카이스캐너 서울–요나고](https://www.skyscanner.co.kr/routes/sela/ygj/seoul-to-yonago.html)
+- [스카이스캐너 서울–마쓰야마](https://www.skyscanner.co.kr/routes/sela/myj/seoul-to-matsuyama.html)
+- [스카이스캐너 서울–가고시마](https://www.skyscanner.co.kr/routes/sela/koj/seoul-to-kagoshima.html)
+- [스카이스캐너 서울–미야자키](https://www.skyscanner.co.kr/routes/sela/kmi/seoul-to-miyazaki.html)
 
 앱은 항공권 가격을 조회·저장하지 않는다. 목적지별 외부 검색 링크만 제공하며,
 사용자는 검색 사이트에서 날짜·성인 5명·직항 조건과 최종 가격을 직접 확인한다.
@@ -39,9 +42,12 @@
 | --- | --- | --- |
 | 다카마쓰·사누키 | [다카마쓰 공항 국제선 시간표](https://www.takamatsu-airport.com/timetable/int.php) | 2026년 7월 서울(인천)→다카마쓰 직항 RS741·LJ359가 매일 편성된 것을 공항 공식 시간표에서 확인. 일부 날짜 운휴와 예고 없는 변경 가능성도 함께 명시됨 |
 | 요나고·산인 | [요나고 기타로 공항 서울선 시간표](https://www.yonago-air.com/flight/seoul) | 2026년 3월 29일~10월 24일 서울(인천)→요나고 직항 RS745가 월·수·목·금·일 편성된 것을 공항 공식 시간표에서 확인 |
+| 마쓰야마·에히메 | [마쓰야마 공항 국제선 시간표](https://www.matsuyama-air-int.jp/timetable/) | 2026년 6월 갱신 시간표에서 서울(인천)→마쓰야마 오전·오후 직항이 매일 편성된 것을 확인 |
+| 가고시마·기리시마 | [가고시마현 공식 국제선 안내](https://www.kagoshima-kankou.com/for/highlights/air) | 2026년 4월 기준 서울→가고시마 대한항공 직항이 매일 편성된 것을 확인 |
+| 미야자키·휴가 | [미야자키 공항 서울행 안내](https://www.miyazaki-airport.co.jp/flight/int_dep/%E3%82%BD%E3%82%A6%E3%83%AB%E4%BB%81%E5%B7%9D%E8%A1%8C%E3%81%8D) | 서울(인천) 직항이 수·금·일요일에 편성된 것을 공항 공식 운항 안내에서 확인 |
 
 후보 설명은 “인천·김포 중 한 곳에서 직항으로 접근 가능”하다는 제품 기준을
-따른다. 두 후보의 현재 근거는 모두 인천 노선이며, 김포 노선을 운항한다고
+따른다. 다섯 후보의 현재 근거는 모두 인천 노선이며, 김포 노선을 운항한다고
 표현하지 않는다.
 
 ## 관광지·루트 편집 근거
@@ -50,6 +56,9 @@
 | --- | --- | --- |
 | 다카마쓰·사누키 | [가가와현 관광협회 공식 사이트](https://www.my-kagawa.jp/en), [고토히라궁](https://www.my-kagawa.jp/en/see-and-do/10078), [치치부가하마](https://www.my-kagawa.jp/en/see-and-do/10090), [마루가메 성](https://www.my-kagawa.jp/en/see-and-do/10084) | 공개 후보 카드의 대표 방문지와 가가와 서부를 잇는 편집 루트의 지역 적합성 확인 |
 | 요나고·산인 | [돗토리현 공식 관광 사이트](https://www.tottori-tour.jp/en/), [사카이미나토 미즈키 시게루 로드](https://www.tottori-tour.jp/en/sightseeing/835/), [다이센](https://www.tottori-tour.jp/en/sightseeing/844/), [마쓰에시 공식 관광 가이드](https://www.visit-matsue.com/discover/city_centre), [신지호](https://www.visit-matsue.com/discover/city_centre/lake_shinji/overview_of_lake_shinji) | 공개 후보 카드의 대표 방문지와 요나고–마쓰에 호수권을 잇는 편집 루트의 지역 적합성 확인 |
+| 마쓰야마·에히메 | [마쓰야마 공식 관광 가이드](https://en.matsuyama-sightseeing.com/), [에히메현 공식 관광 가이드](https://www.visitehimejapan.com/en/), [도고온천 관광 안내](https://www.dogokanko.or.jp/) | 도고온천·마쓰야마 도심과 우치코·오즈, 세토내해 해안을 잇는 편집 루트의 지역 적합성 확인 |
+| 가고시마·기리시마 | [가고시마현 공식 관광 가이드](https://www.kagoshima-kankou.com/for/), [가고시마시 공식 관광 가이드](https://www.kagoshima-yokanavi.jp/en/), [기리시마 관광협회](https://kirishimakankou.com/) | 기리시마·사쿠라지마·가고시마 시내와 사쓰마반도를 잇는 화산·온천 순환 루트의 지역 적합성 확인 |
+| 미야자키·휴가 | [미야자키현 공식 관광 사이트](https://www.kanko-miyazaki.jp/), [다카치호 관광협회](https://www.kanko-takachiho.jp/), [니치난시 관광협회](https://www.kankou-nichinan.jp/) | 아오시마·니치난 해안과 다카치호 산간을 일정별로 나눈 편집 루트의 지역 적합성 확인 |
 
 위 관광 자료는 장소의 존재와 권역별 대표성을 확인하는 근거다. 일자별 이동
 거리·시간, 숙박 거점, 방문 순서는 공식 관광청의 확정 일정이 아니라 이

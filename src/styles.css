@@ -117,7 +117,7 @@ dl {
 }
 
 .site-header {
-  width: min(100% - 2rem, var(--content));
+  width: min(calc(100% - 2rem), var(--content));
   min-height: 4.5rem;
   margin-inline: auto;
   display: flex;
@@ -142,7 +142,7 @@ dl {
 }
 
 main {
-  width: min(100% - 2rem, var(--content));
+  width: min(calc(100% - 2rem), var(--content));
   margin-inline: auto;
 }
 
@@ -466,6 +466,9 @@ main {
 
 .travel-reference-list a {
   min-width: 0;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
   color: var(--forest);
   font-size: 0.84rem;
   font-weight: 800;
@@ -738,7 +741,7 @@ main {
 }
 
 footer {
-  width: min(100% - 2rem, var(--content));
+  width: min(calc(100% - 2rem), var(--content));
   margin-inline: auto;
   padding-block: 2rem 3rem;
   color: var(--muted);
@@ -769,7 +772,7 @@ footer {
   main,
   .site-header,
   footer {
-    width: min(100% - 1.25rem, var(--content));
+    width: min(calc(100% - 1.25rem), var(--content));
   }
 
   .hero {
@@ -823,6 +826,10 @@ footer {
 
   .travel-reference__category {
     justify-self: start;
+  }
+
+  .travel-reference-list a {
+    width: 100%;
   }
 
   .result-section {

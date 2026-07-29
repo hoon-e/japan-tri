@@ -51,12 +51,12 @@ test("flight search shortcuts are static, destination-specific, and safe", () =>
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/tak/")));
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/ygj/")));
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/myj/")));
-  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/hsg/")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/koj/")));
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/kmi/")));
   assert.match(html, /서울\s*→\s*다카마쓰/);
   assert.match(html, /서울\s*→\s*요나고/);
   assert.match(html, /서울\s*→\s*마쓰야마/);
-  assert.match(html, /서울\s*→\s*사가/);
+  assert.match(html, /서울\s*→\s*가고시마/);
   assert.match(html, /서울\s*→\s*미야자키/);
   assert.doesNotMatch(html, /최저가 Top 5|flight-deals-list|flight-deals-updated|flight-deals-empty/);
   assert.doesNotMatch(app, /flight-prices\.json|initializeFlightDeals|normalizeFlightDeals|fetch\(/);
@@ -66,6 +66,10 @@ test("the mobile stylesheet includes a narrow-screen layout without forced page 
   assert.match(css, /@media\s*\([^)]*max-width/i);
   assert.doesNotMatch(css, /body\s*\{[^}]*min-width\s*:\s*[4-9]\d{2}px/is);
   assert.doesNotMatch(css, /html\s*\{[^}]*min-width\s*:\s*[4-9]\d{2}px/is);
+  assert.doesNotMatch(css, /min\(\s*100%\s*-/);
+  assert.doesNotMatch(routeCss, /min\(\s*100%\s*-/);
+  assert.match(css, /min\(\s*calc\(100%\s*-\s*1\.25rem\)/);
+  assert.match(routeCss, /min\(\s*calc\(100%\s*-\s*1\.25rem\)/);
   assert.match(css, /@media\s*\([^)]*max-width[^}]+\}[\s\S]*\.route-detail-link\s*\{[^}]*width\s*:\s*100%/i);
 });
 
@@ -121,6 +125,14 @@ test("destination cards expose categorized safe travel references", () => {
   assert.match(
     css,
     /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.travel-reference-list li\s*\{[^}]*grid-template-columns\s*:\s*1fr/is,
+  );
+  assert.match(
+    css,
+    /\.travel-reference-list a\s*\{[^}]*min-height\s*:\s*2\.75rem[^}]*display\s*:\s*inline-flex/is,
+  );
+  assert.match(
+    css,
+    /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.travel-reference-list a\s*\{[^}]*width\s*:\s*100%/is,
   );
 });
 
@@ -182,6 +194,12 @@ test("content documentation keeps official flight and tourism evidence", () => {
   assert.match(contentSources, /확인일:\s*\*\*2026-07-29\*\*/);
   assert.match(contentSources, /takamatsu-airport\.com\/timetable\/int\.php/);
   assert.match(contentSources, /yonago-air\.com\/flight\/seoul/);
+  assert.match(contentSources, /matsuyama-air-int\.jp\/timetable/);
+  assert.match(contentSources, /kagoshima-kankou\.com\/for\/highlights\/air/);
+  assert.match(contentSources, /miyazaki-airport\.co\.jp\/flight\/int_dep/);
+  assert.match(contentSources, /visitehimejapan\.com\/en/);
+  assert.match(contentSources, /kirishimakankou\.com/);
+  assert.match(contentSources, /kanko-takachiho\.jp/);
   assert.match(contentSources, /my-kagawa\.jp\/en/);
   assert.match(contentSources, /tottori-tour\.jp\/en/);
   assert.match(contentSources, /visit-matsue\.com/);

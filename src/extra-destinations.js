@@ -16,7 +16,7 @@ export const extraDestinations = [
       "도고온천과 마쓰야마 성 주변은 일방통행과 보행자가 많아 외곽 주차장을 이용하세요.",
       "시마나미 해안 교량은 강풍 시 통행 규제와 속도 제한을 확인하세요.",
     ],
-    referenceLinks: [
+    travelLinks: [
       { category: "관광·명소", label: "마쓰야마 공식 관광 가이드", url: "https://en.matsuyama-sightseeing.com/" },
       { category: "음식·문화", label: "에히메현 공식 관광 가이드", url: "https://www.visitehimejapan.com/en/" },
       { category: "계절·드라이브", label: "도고온천 관광 안내", url: "https://www.dogokanko.or.jp/" },
@@ -72,7 +72,7 @@ export const extraDestinations = [
       "사쿠라지마와 기리시마에서는 화산 경보·강회 구간과 도로 통제 정보를 확인하세요.",
       "산간 온천길은 안개와 급커브가 잦아 해 지기 전에 이동을 마치세요.",
     ],
-    referenceLinks: [
+    travelLinks: [
       { category: "관광·명소", label: "가고시마현 공식 관광 가이드", url: "https://www.kagoshima-kankou.com/for/" },
       { category: "음식·문화", label: "가고시마시 공식 관광 가이드", url: "https://www.kagoshima-yokanavi.jp/en/" },
       { category: "계절·드라이브", label: "기리시마 관광협회", url: "https://kirishimakankou.com/" },
@@ -128,7 +128,7 @@ export const extraDestinations = [
       "니치난 해안은 강풍·파랑과 낙석으로 통제될 수 있어 출발 전 도로 정보를 확인하세요.",
       "다카치호 왕복일은 산길과 터널이 길어 휴식 시간을 넉넉히 잡으세요.",
     ],
-    referenceLinks: [
+    travelLinks: [
       { category: "관광·명소", label: "미야자키현 공식 관광 사이트", url: "https://www.kanko-miyazaki.jp/" },
       { category: "음식·문화", label: "다카치호 관광협회", url: "https://www.kanko-takachiho.jp/" },
       { category: "계절·드라이브", label: "니치난시 관광협회", url: "https://www.kankou-nichinan.jp/" },

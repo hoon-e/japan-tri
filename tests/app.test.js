@@ -173,12 +173,12 @@ test("all curated routes expose finite at-a-glance driving totals", () => {
     { kilometers: 230, minutes: 350 },
     { kilometers: 155, minutes: 215 },
     { kilometers: 275, minutes: 380 },
-    { kilometers: 205, minutes: 285 },
-    { kilometers: 315, minutes: 430 },
     { kilometers: 195, minutes: 275 },
-    { kilometers: 305, minutes: 435 },
-    { kilometers: 180, minutes: 270 },
-    { kilometers: 455, minutes: 590 },
+    { kilometers: 330, minutes: 430 },
+    { kilometers: 200, minutes: 290 },
+    { kilometers: 355, minutes: 490 },
+    { kilometers: 180, minutes: 260 },
+    { kilometers: 475, minutes: 595 },
   ]);
   assert.ok(
     summaries.every(
@@ -227,10 +227,10 @@ test("createRouteDetailUrl addresses all ten curated destination-duration routes
     "./route.html?destination=yonago-san-in&duration=3n4d",
     "./route.html?destination=matsuyama-ehime&duration=2n3d",
     "./route.html?destination=matsuyama-ehime&duration=3n4d",
-    "./route.html?destination=saga-ureshino-arita&duration=2n3d",
-    "./route.html?destination=saga-ureshino-arita&duration=3n4d",
-    "./route.html?destination=miyazaki-takachiho-nichinan&duration=2n3d",
-    "./route.html?destination=miyazaki-takachiho-nichinan&duration=3n4d",
+    "./route.html?destination=kagoshima-kirishima&duration=2n3d",
+    "./route.html?destination=kagoshima-kirishima&duration=3n4d",
+    "./route.html?destination=miyazaki-hyuga&duration=2n3d",
+    "./route.html?destination=miyazaki-hyuga&duration=3n4d",
   ]);
 });
 
