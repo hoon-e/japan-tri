@@ -188,15 +188,8 @@ function renderDayFilter(route, layers, filter) {
   });
 }
 
-async function renderMap(route, elements) {
+function renderMap(route, elements) {
   renderLegend(route, elements.legendList);
-  elements.mapStatus.textContent = "지도를 불러오는 중입니다.";
-
-  if (!window.L && document.readyState !== "complete") {
-    await new Promise((resolve) => {
-      window.addEventListener("load", resolve, { once: true });
-    });
-  }
 
   if (!window.L) {
     elements.map.hidden = true;
@@ -255,7 +248,7 @@ function renderRouteDetail(selection, elements) {
       createElement("li", { text: note }),
     ),
   );
-  void renderMap(route, elements);
+  renderMap(route, elements);
 }
 
 function init() {
