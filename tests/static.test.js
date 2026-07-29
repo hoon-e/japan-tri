@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+const app = await readFile(new URL("../src/app.js", import.meta.url), "utf8");
 
 test("the static entry point exposes the core journey and accessibility hooks", () => {
   assert.match(html, /<html[^>]+lang=["']ko["']/i);
@@ -26,6 +27,15 @@ test("the mobile stylesheet includes a narrow-screen layout without forced page 
   assert.match(css, /@media\s*\([^)]*max-width/i);
   assert.doesNotMatch(css, /body\s*\{[^}]*min-width\s*:\s*[4-9]\d{2}px/is);
   assert.doesNotMatch(css, /html\s*\{[^}]*min-width\s*:\s*[4-9]\d{2}px/is);
+  assert.match(css, /@media\s*\([^)]*max-width[^}]+\}[\s\S]*\.route-detail-link\s*\{[^}]*width\s*:\s*100%/i);
+});
+
+test("the selected route exposes a descriptive, query-driven detail link", () => {
+  assert.match(app, /className:\s*["']route-detail-link["']/);
+  assert.match(app, /destination:\s*destinationId/);
+  assert.match(app, /duration/);
+  assert.match(app, /setAttribute\(\s*["']aria-label["']/);
+  assert.match(css, /\.route-detail-link:focus-visible|a:focus-visible/);
 });
 
 test("the page does not advertise excluded product capabilities", () => {

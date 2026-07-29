@@ -2,12 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
+  createRouteDetailUrl,
   getDefaultDuration,
   getRouteForDuration,
   normalizeDestinations,
   normalizeFlightDeals,
   selectRandomDestination,
 } from "../src/app.js";
+import { destinations } from "../src/data.js";
 
 const routes = [
   {
@@ -137,6 +139,31 @@ test("getDefaultDuration selects the first available route duration", () => {
   assert.equal(getDefaultDuration(destination), "2n3d");
   assert.equal(getDefaultDuration({ routes: [] }), null);
   assert.equal(getDefaultDuration(null), null);
+});
+
+test("createRouteDetailUrl addresses all six curated destination-duration routes", () => {
+  const urls = destinations.flatMap((item) =>
+    item.routes.map((route) =>
+      createRouteDetailUrl(item.id, route.duration),
+    ),
+  );
+
+  assert.equal(urls.length, 6);
+  assert.equal(new Set(urls).size, 6);
+  assert.deepEqual(urls, [
+    "./route.html?destination=kumamoto-aso&duration=2n3d",
+    "./route.html?destination=kumamoto-aso&duration=3n4d",
+    "./route.html?destination=takamatsu-sanuki&duration=2n3d",
+    "./route.html?destination=takamatsu-sanuki&duration=3n4d",
+    "./route.html?destination=yonago-san-in&duration=2n3d",
+    "./route.html?destination=yonago-san-in&duration=3n4d",
+  ]);
+});
+
+test("createRouteDetailUrl rejects incomplete route identities", () => {
+  assert.equal(createRouteDetailUrl("", "2n3d"), null);
+  assert.equal(createRouteDetailUrl("kumamoto-aso", ""), null);
+  assert.equal(createRouteDetailUrl(null, "2n3d"), null);
 });
 
 test("normalizeDestinations removes malformed records and duplicate ids", () => {
