@@ -202,6 +202,57 @@ function createElement(tagName, options = {}) {
   return element;
 }
 
+export function isValidTravelLink(link) {
+  if (
+    !link ||
+    typeof link !== "object" ||
+    !isNonEmptyString(link.category) ||
+    !isNonEmptyString(link.label) ||
+    !isNonEmptyString(link.url)
+  ) {
+    return false;
+  }
+
+  try {
+    return new URL(link.url).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function renderTravelLinks(destination) {
+  const section = createElement("section", {
+    className: "travel-references",
+  });
+  const heading = createElement("h4", { text: "여행 참고 링크" });
+  const list = createElement("ul", {
+    className: "travel-reference-list",
+  });
+
+  (destination.travelLinks ?? [])
+    .filter(isValidTravelLink)
+    .forEach((reference) => {
+      const item = createElement("li");
+      const category = createElement("span", {
+        className: "travel-reference__category",
+        text: reference.category,
+      });
+      const link = createElement("a", { text: reference.label });
+      link.href = reference.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute(
+        "aria-label",
+        `${destination.name} ${reference.category}: ${reference.label} (새 탭)`,
+      );
+      item.append(category, link);
+      list.append(item);
+    });
+
+  section.append(heading, list);
+  return section;
+}
+
 function renderDestinationCard(destination) {
   const card = createElement("article", { className: "destination-card" });
   const image = createElement("img");
@@ -267,6 +318,7 @@ function renderDestinationCard(destination) {
     facts,
     highlights,
     reasonDetails,
+    renderTravelLinks(destination),
   );
   card.append(image, body);
   return card;

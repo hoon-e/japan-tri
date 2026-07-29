@@ -99,6 +99,17 @@ test("the overview keeps comparable shortlist and selected route facts", () => {
   assert.match(css, /\.route-dashboard__facts\s*\{/);
 });
 
+test("destination cards expose categorized safe travel references", () => {
+  assert.match(app, /className:\s*["']travel-references["']/);
+  assert.match(app, /className:\s*["']travel-reference__category["']/);
+  assert.match(app, /link\.target\s*=\s*["']_blank["']/);
+  assert.match(app, /link\.rel\s*=\s*["']noopener noreferrer["']/);
+  assert.match(
+    css,
+    /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.travel-reference-list li\s*\{[^}]*grid-template-columns\s*:\s*1fr/is,
+  );
+});
+
 test("the duration tabs preserve accessible state and keyboard navigation", () => {
   assert.match(app, /tab\.setAttribute\(\s*["']role["'],\s*["']tab["']\s*\)/);
   assert.match(app, /tab\.setAttribute\(\s*["']aria-controls["'],\s*["']route-panel["']\s*\)/);

@@ -39,6 +39,18 @@ test("the public shortlist contains unique, fully described destinations", () =>
     assert.ok(destination.drivingNotes.length >= 1);
     assert.ok(destination.highlights.every((item) => item.trim().length > 0));
     assert.ok(destination.drivingNotes.every((item) => item.trim().length > 0));
+    assert.ok(destination.travelLinks.length >= 2);
+    assert.ok(destination.travelLinks.length <= 4);
+    assert.ok(
+      destination.travelLinks.every(
+        (link) =>
+          typeof link.category === "string" &&
+          link.category.trim() &&
+          typeof link.label === "string" &&
+          link.label.trim() &&
+          new URL(link.url).protocol === "https:",
+      ),
+    );
   }
 });
 
