@@ -6,8 +6,6 @@ import {
   formatRouteEstimate,
   getDefaultDuration,
   getRouteForDuration,
-  formatRouteEstimate,
-  parseDriveEstimate,
   normalizeDestinations,
   normalizeFlightDeals,
   parseDriveEstimate,
