@@ -9,8 +9,34 @@ import {
 } from "../src/app.js";
 
 const routes = [
-  { duration: "2n3d", label: "2박 3일", days: [{ day: 1 }] },
-  { duration: "3n4d", label: "3박 4일", days: [{ day: 1 }] },
+  {
+    duration: "2n3d",
+    label: "2박 3일",
+    summary: "짧은 검수 루트",
+    days: [
+      {
+        day: 1,
+        title: "첫째 날",
+        base: "테스트 숙박지",
+        drive: "약 30분",
+        stops: ["테스트 명소"],
+      },
+    ],
+  },
+  {
+    duration: "3n4d",
+    label: "3박 4일",
+    summary: "긴 검수 루트",
+    days: [
+      {
+        day: 1,
+        title: "첫째 날",
+        base: "테스트 숙박지",
+        drive: "약 45분",
+        stops: ["테스트 명소"],
+      },
+    ],
+  },
 ];
 
 const destination = {
@@ -26,6 +52,7 @@ function createValidDestination(id) {
     region: "테스트 권역",
     airport: "테스트 공항",
     image: "https://example.com/image.jpg",
+    imageAlt: "테스트 목적지 풍경",
     summary: "테스트 목적지 설명",
     directFlightReason: "인천 직항 접근성 테스트",
     driveReason: "렌터카 이동 테스트",
