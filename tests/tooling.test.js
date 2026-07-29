@@ -24,11 +24,11 @@ test("package scripts expose the documented validation and build commands", asyn
   assert.equal(pkg.scripts["test:static"], "node --test tests/static.test.js");
   assert.equal(
     pkg.scripts.typecheck,
-    "node --check src/app.js && node --check src/data.js && node --check scripts/update-flight-prices.mjs",
+    "node --check src/app.js && node --check src/data.js && node --check src/route-detail.js && node --check scripts/update-flight-prices.mjs",
   );
   assert.equal(
     pkg.scripts.lint,
-    "node --check src/app.js && node --check src/data.js && node --check scripts/*.mjs && node --check tests/*.test.js",
+    "node --check src/app.js && node --check src/data.js && node --check src/route-detail.js && node --check scripts/*.mjs && node --check tests/*.test.js",
   );
   assert.equal(
     pkg.scripts.check,
