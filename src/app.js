@@ -102,6 +102,18 @@ export function getDefaultDuration(destination) {
   return destination.routes[0]?.duration ?? null;
 }
 
+export function createRouteDetailUrl(destinationId, duration) {
+  if (!isNonEmptyString(destinationId) || !isNonEmptyString(duration)) {
+    return null;
+  }
+
+  const params = new URLSearchParams({
+    destination: destinationId,
+    duration,
+  });
+  return `./route.html?${params.toString()}`;
+}
+
 function isSafeHttpUrl(value) {
   if (!isNonEmptyString(value)) return false;
 
@@ -223,7 +235,7 @@ function renderShortlist(shortlist, elements) {
   });
 }
 
-function renderRoute(route, panel) {
+function renderRoute(destination, route, panel) {
   panel.replaceChildren();
 
   if (!route) {
@@ -247,6 +259,20 @@ function renderRoute(route, panel) {
     className: "route-summary",
     text: route.summary,
   });
+  const detailUrl = createRouteDetailUrl(destination?.id, route.duration);
+  const detailLink = detailUrl
+    ? createElement("a", {
+        className: "route-detail-link",
+        text: `${route.label} 지도와 상세 일정 보기`,
+      })
+    : null;
+  if (detailLink) {
+    detailLink.href = detailUrl;
+    detailLink.setAttribute(
+      "aria-label",
+      `${destination.name} ${route.label} 지도와 상세 일정 보기`,
+    );
+  }
   const days = createElement("ol", { className: "route-days" });
 
   route.days.forEach((day) => {
@@ -267,13 +293,15 @@ function renderRoute(route, panel) {
     days.append(item);
   });
 
-  panel.append(intro, days);
+  panel.append(intro);
+  if (detailLink) panel.append(detailLink);
+  panel.append(days);
 }
 
 function setActiveRoute(destination, duration, elements, focusTab = false) {
   const route = getRouteForDuration(destination, duration);
   if (!route) {
-    renderRoute(null, elements.routePanel);
+    renderRoute(destination, null, elements.routePanel);
     return;
   }
 
@@ -284,7 +312,7 @@ function setActiveRoute(destination, duration, elements, focusTab = false) {
     tab.tabIndex = isActive ? 0 : -1;
     tab.classList.toggle("is-active", isActive);
   });
-  renderRoute(route, elements.routePanel);
+  renderRoute(destination, route, elements.routePanel);
 
   if (focusTab) {
     tabs.find((tab) => tab.dataset.routeDuration === duration)?.focus();
@@ -349,7 +377,7 @@ function renderResult(destination, elements) {
       }),
     );
     elements.routeTabs.replaceChildren();
-    renderRoute(null, elements.routePanel);
+    renderRoute(null, null, elements.routePanel);
     elements.result.hidden = false;
     return;
   }

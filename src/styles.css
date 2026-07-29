@@ -527,8 +527,26 @@ main {
 }
 
 .route-summary {
-  margin-bottom: 1rem;
   color: var(--muted);
+}
+
+.route-detail-link {
+  width: fit-content;
+  min-height: 2.75rem;
+  margin-block: 1rem 1.25rem;
+  padding: 0.65rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: var(--accent);
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.route-detail-link:hover {
+  background: var(--accent-dark);
 }
 
 .route-days {
@@ -618,7 +636,8 @@ footer {
   }
 
   .primary-button,
-  .secondary-button {
+  .secondary-button,
+  .route-detail-link {
     width: 100%;
   }
 
