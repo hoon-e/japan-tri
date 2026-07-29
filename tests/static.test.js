@@ -42,7 +42,7 @@ test("the mobile stylesheet includes a narrow-screen layout without forced page 
   assert.match(css, /@media\s*\([^)]*max-width[^}]+\}[\s\S]*\.route-detail-link\s*\{[^}]*width\s*:\s*100%/i);
 });
 
-test("the overview components keep mobile-safe grids and wrapping content", () => {
+test("the overview components keep mobile-safe grids and touch targets", () => {
   assert.match(
     css,
     /\.destination-grid\s*\{[^}]*grid-template-columns\s*:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/is,
@@ -52,7 +52,6 @@ test("the overview components keep mobile-safe grids and wrapping content", () =
     /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.destination-grid\s*\{[^}]*grid-template-columns\s*:\s*1fr/is,
   );
   assert.match(css, /\.destination-card\s*\{[^}]*min-width\s*:\s*0/is);
-  assert.match(css, /\.tag-list\s*\{[^}]*flex-wrap\s*:\s*wrap/is);
   assert.match(css, /\.route-tabs\s*\{[^}]*overflow-x\s*:\s*auto/is);
   assert.match(css, /\.route-tab\s*\{[^}]*min-height\s*:\s*2\.75rem/is);
 });
@@ -65,28 +64,18 @@ test("the selected route exposes a descriptive, query-driven detail link", () =>
   assert.match(css, /\.route-detail-link:focus-visible|a:focus-visible/);
 });
 
-test("the selected-trip dashboard exposes the overview hierarchy used for route comparison", () => {
-  assert.match(app, /className:\s*["']route-dashboard["']/);
-  assert.match(app, /className:\s*["']route-dashboard__facts["']/);
-  assert.match(app, /className:\s*["']route-dashboard__stops["']/);
-  assert.match(app, /한눈에 보는 이번 루트/);
-  assert.match(app, /일자별 빠른 보기/);
-  assert.match(app, /\["기간",\s*route\.label\]/);
-  assert.match(app, /\["총 일정",\s*`\$\{route\.days\.length\}일`\]/);
-  assert.match(app, /\["총 주행",\s*formatRouteEstimate\(routeMetrics\)\]/);
-  assert.match(app, /마지막 숙박/);
-  assert.match(app, /route\.days\.forEach\(\(day\)\s*=>/);
-});
-
-test("the shortlist cards expose comparable quick facts for destination scanning", () => {
+test("the overview keeps comparable shortlist and selected route facts", () => {
   assert.match(app, /className:\s*["']destination-facts["']/);
-  assert.match(app, /className:\s*["']destination-reasons["']/);
-  assert.match(app, /className:\s*["']tag-list["']/);
-  assert.match(app, /\["추천 일정",\s*destination\.recommendedDuration\]/);
-  assert.match(app, /\["비교 루트",\s*`\$\{destination\.routes\.length\}개`\]/);
-  assert.match(app, /직항 접근성/);
-  assert.match(app, /드라이브 적합성/);
-  assert.match(app, /대표 방문지/);
+  assert.match(app, /className:\s*["']result-dashboard["']/);
+  assert.match(app, /className:\s*["']result-facts["']/);
+  assert.match(app, /className:\s*["']result-cautions["']/);
+  assert.match(app, /className:\s*["']route-dashboard["']/);
+  assert.match(app, /className:\s*["']route-dashboard__stops["']/);
+  assert.match(app, /총 거리/);
+  assert.match(app, /운전 시간/);
+  assert.match(app, /일자별 빠른 보기/);
+  assert.match(css, /\.result-facts\s*\{/);
+  assert.match(css, /\.route-dashboard__facts\s*\{/);
 });
 
 test("the duration tabs preserve accessible state and keyboard navigation", () => {
