@@ -222,8 +222,6 @@ test("all curated routes expose finite at-a-glance driving totals", () => {
   );
 
   assert.deepEqual(summaries, [
-    { kilometers: 185, minutes: 280 },
-    { kilometers: 270, minutes: 405 },
     { kilometers: 160, minutes: 240 },
     { kilometers: 230, minutes: 350 },
     { kilometers: 155, minutes: 215 },
@@ -260,18 +258,16 @@ test("route metric labels remain compact and omit empty minute components", () =
   assert.equal(formatRouteEstimate(null), "표기된 운전 정보 없음");
 });
 
-test("createRouteDetailUrl addresses all six curated destination-duration routes", () => {
+test("createRouteDetailUrl addresses all four curated destination-duration routes", () => {
   const urls = destinations.flatMap((item) =>
     item.routes.map((route) =>
       createRouteDetailUrl(item.id, route.duration),
     ),
   );
 
-  assert.equal(urls.length, 6);
-  assert.equal(new Set(urls).size, 6);
+  assert.equal(urls.length, 4);
+  assert.equal(new Set(urls).size, 4);
   assert.deepEqual(urls, [
-    "./route.html?destination=kumamoto-aso&duration=2n3d",
-    "./route.html?destination=kumamoto-aso&duration=3n4d",
     "./route.html?destination=takamatsu-sanuki&duration=2n3d",
     "./route.html?destination=takamatsu-sanuki&duration=3n4d",
     "./route.html?destination=yonago-san-in&duration=2n3d",
@@ -281,7 +277,7 @@ test("createRouteDetailUrl addresses all six curated destination-duration routes
 
 test("createRouteDetailUrl rejects incomplete route identities", () => {
   assert.equal(createRouteDetailUrl("", "2n3d"), null);
-  assert.equal(createRouteDetailUrl("kumamoto-aso", ""), null);
+  assert.equal(createRouteDetailUrl("takamatsu-sanuki", ""), null);
   assert.equal(createRouteDetailUrl(null, "2n3d"), null);
 });
 

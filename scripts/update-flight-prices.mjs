@@ -3,9 +3,8 @@ import { pathToFileURL } from "node:url";
 
 export const FLIGHT_SEARCH_CONFIG = {
   departureAirports: ["ICN", "GMP"],
-  destinationAirports: ["KMJ", "TAK", "YGJ"],
+  destinationAirports: ["TAK", "YGJ"],
   destinationNames: {
-    KMJ: "구마모토",
     TAK: "다카마쓰",
     YGJ: "요나고",
   },

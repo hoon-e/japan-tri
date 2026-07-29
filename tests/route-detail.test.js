@@ -8,7 +8,7 @@ import {
 } from "../src/route-detail.js";
 import { destinations } from "../src/data.js";
 
-test("getRouteSelection resolves all six canonical detail URLs", () => {
+test("getRouteSelection resolves all four canonical detail URLs", () => {
   const selections = destinations.flatMap((destination) =>
     destination.routes.map((route) =>
       getRouteSelection(
@@ -17,7 +17,7 @@ test("getRouteSelection resolves all six canonical detail URLs", () => {
     ),
   );
 
-  assert.equal(selections.length, 6);
+  assert.equal(selections.length, 4);
   assert.ok(selections.every(Boolean));
   assert.deepEqual(
     selections.map(({ destination, route }) => [
@@ -32,9 +32,13 @@ test("getRouteSelection resolves all six canonical detail URLs", () => {
 
 test("getRouteSelection rejects missing, unsupported, and mismatched queries", () => {
   assert.equal(getRouteSelection(""), null);
-  assert.equal(getRouteSelection("?destination=kumamoto-aso"), null);
   assert.equal(
-    getRouteSelection("?destination=kumamoto-aso&duration=one-week"),
+    getRouteSelection("?destination=kumamoto-aso&duration=2n3d"),
+    null,
+  );
+  assert.equal(getRouteSelection("?destination=takamatsu-sanuki"), null);
+  assert.equal(
+    getRouteSelection("?destination=takamatsu-sanuki&duration=one-week"),
     null,
   );
   assert.equal(
@@ -45,7 +49,7 @@ test("getRouteSelection rejects missing, unsupported, and mismatched queries", (
 
 test("isValidMapStop accepts bounded coordinates and rejects malformed points", () => {
   assert.equal(
-    isValidMapStop({ name: "아소 신사", coordinates: [32.947, 131.117] }),
+    isValidMapStop({ name: "다카마쓰 공항", coordinates: [34.215, 134.019] }),
     true,
   );
   assert.equal(

@@ -5,7 +5,7 @@
   "source": "SerpApi Google Flights",
   "search": {
     "departureAirports": ["ICN", "GMP"],
-    "destinationAirports": ["KMJ", "TAK", "YGJ"],
+    "destinationAirports": ["TAK", "YGJ"],
     "outboundStart": "2026-11-01",
     "outboundEnd": "2026-11-14",
     "tripNights": [2, 3],

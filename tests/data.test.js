@@ -19,7 +19,11 @@ const requiredTextFields = [
 
 test("the public shortlist contains unique, fully described destinations", () => {
   assert.ok(Array.isArray(destinations));
-  assert.ok(destinations.length >= 3, "the shortlist should remain meaningfully comparable");
+  assert.ok(destinations.length >= 2, "the shortlist should remain meaningfully comparable");
+  assert.ok(
+    destinations.every((destination) => destination.id !== "kumamoto-aso"),
+    "Kumamoto-Aso must remain excluded from the public shortlist",
+  );
 
   const ids = new Set();
   for (const destination of destinations) {
@@ -83,8 +87,6 @@ test("every destination has complete, internally consistent duration routes", ()
   assert.deepEqual(
     [...routeIds].sort(),
     [
-      "kumamoto-aso/2n3d",
-      "kumamoto-aso/3n4d",
       "takamatsu-sanuki/2n3d",
       "takamatsu-sanuki/3n4d",
       "yonago-san-in/2n3d",

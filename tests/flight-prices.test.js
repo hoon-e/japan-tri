@@ -38,7 +38,7 @@ test("buildSerpApiUrl requests five-adult nonstop round trips without exposing t
 
   assert.equal(url.origin, "https://serpapi.com");
   assert.equal(url.searchParams.get("departure_id"), "ICN,GMP");
-  assert.equal(url.searchParams.get("arrival_id"), "KMJ,TAK,YGJ");
+  assert.equal(url.searchParams.get("arrival_id"), "TAK,YGJ");
   assert.equal(url.searchParams.get("adults"), "5");
   assert.equal(url.searchParams.get("stops"), "1");
   assert.equal(url.searchParams.get("currency"), "KRW");
