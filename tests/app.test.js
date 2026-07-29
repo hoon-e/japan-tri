@@ -5,9 +5,12 @@ import {
   createRouteDetailUrl,
   getDefaultDuration,
   getRouteForDuration,
+  formatRouteEstimate,
+  parseDriveEstimate,
   normalizeDestinations,
   normalizeFlightDeals,
   selectRandomDestination,
+  summarizeRouteMetrics,
 } from "../src/app.js";
 import { destinations } from "../src/data.js";
 
@@ -101,6 +104,34 @@ test("selectRandomDestination handles an out-of-range random sample defensively"
 
   assert.ok(shortlist.includes(selectRandomDestination(shortlist, () => 1)));
   assert.ok(shortlist.includes(selectRandomDestination(shortlist, () => -1)));
+});
+
+test("parseDriveEstimate extracts distance and duration from a route-day drive string", () => {
+  assert.deepEqual(parseDriveEstimate("약 45km · 1시간 10분"), {
+    kilometers: 45,
+    minutes: 70,
+  });
+});
+
+test("summarizeRouteMetrics totals the visible route-day drive estimates", () => {
+  const route = {
+    days: [
+      { drive: "약 45km · 1시간 10분" },
+      { drive: "약 75km · 2시간" },
+    ],
+  };
+
+  assert.deepEqual(summarizeRouteMetrics(route), {
+    kilometers: 120,
+    minutes: 190,
+  });
+});
+
+test("formatRouteEstimate renders the compact dashboard copy for combined metrics", () => {
+  assert.equal(
+    formatRouteEstimate({ kilometers: 120, minutes: 190 }),
+    "약 120km · 3시간 10분",
+  );
 });
 
 test("normalizeFlightDeals keeps valid offers sorted by price and capped at five", () => {
