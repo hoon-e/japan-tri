@@ -27,12 +27,25 @@ test("the static entry point exposes the core journey and accessibility hooks", 
   assert.match(html, /id=["']route-tabs["'][^>]+role=["']tablist["']/);
   assert.match(html, /id=["']route-panel["']/);
   assert.match(html, /id=["']empty-state["']/);
-  assert.match(html, /id=["']flight-deals["']/);
-  assert.match(html, /id=["']flight-deals-list["'][^>]+aria-live=/);
-  assert.match(html, /id=["']flight-deals-updated["']/);
-  assert.match(html, /id=["']flight-deals-empty["']/);
+  assert.match(html, /id=["']flight-search["']/);
   assert.doesNotMatch(html, /participant-|5명 중 한 명 뽑기/);
   assert.match(html, /<script[^>]+type=["']module["'][^>]+src=["'][^"']*src\/app\.js["']/);
+});
+
+test("flight search shortcuts are static, destination-specific, and safe", () => {
+  const links = [...html.matchAll(
+    /<a(?=[^>]+class=["'][^"']*flight-search-link[^"']*["'])(?=[^>]+href=["']([^"']+)["'])(?=[^>]+target=["']_blank["'])(?=[^>]+rel=["']noopener noreferrer["'])[^>]*>/gi,
+  )].map((match) => match[1]);
+
+  assert.equal(links.length, 4);
+  assert.ok(links.every((href) => href.startsWith("https://")));
+  assert.ok(links.some((href) => href.includes("google.com/travel/flights")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/tak/")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/ygj/")));
+  assert.match(html, /서울\s*→\s*다카마쓰/);
+  assert.match(html, /서울\s*→\s*요나고/);
+  assert.doesNotMatch(html, /최저가 Top 5|flight-deals-list|flight-deals-updated|flight-deals-empty/);
+  assert.doesNotMatch(app, /flight-prices\.json|initializeFlightDeals|normalizeFlightDeals|fetch\(/);
 });
 
 test("the mobile stylesheet includes a narrow-screen layout without forced page width", () => {
@@ -54,6 +67,14 @@ test("the overview components keep mobile-safe grids and touch targets", () => {
   assert.match(css, /\.destination-card\s*\{[^}]*min-width\s*:\s*0/is);
   assert.match(css, /\.route-tabs\s*\{[^}]*overflow-x\s*:\s*auto/is);
   assert.match(css, /\.route-tab\s*\{[^}]*min-height\s*:\s*2\.75rem/is);
+  assert.match(
+    css,
+    /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.flight-search-actions\s*\{[^}]*display\s*:\s*grid/is,
+  );
+  assert.match(
+    css,
+    /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.flight-search-link\s*\{[^}]*width\s*:\s*100%/is,
+  );
 });
 
 test("the selected route exposes a descriptive, query-driven detail link", () => {

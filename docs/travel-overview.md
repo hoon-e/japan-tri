@@ -12,7 +12,7 @@
 현재 메인 화면은 다음 순서로 읽힌다.
 
 1. `index.html`의 hero: 빠른 맥락 설명과 무작위 선택 CTA
-2. `#flight-deals`: 5인 기준 직항 왕복 Top 5 스냅샷
+2. `#flight-search`: 목적지별 외부 항공권 검색 바로가기
 3. `#shortlist`: 공개 후보군 비교 카드
 4. `#result`: 선정된 여행지 요약
 5. `#route-tabs` + `#route-panel`: 기간별 루트 전환
@@ -57,7 +57,7 @@
 
 - 무작위 선택은 `normalizeDestinations()` 결과만 대상으로 한다.
 - `selectRandomDestination()`은 shortlist 밖 항목을 선택하지 않는다.
-- 항공권 Top 5는 정규화된 `flight-prices.json` 스냅샷만 표시한다.
+- 항공권 영역은 가격을 수집하지 않고 목적지별 외부 검색 링크만 제공한다.
 - `createRouteDetailUrl()`은 `route.html?destination=<id>&duration=<duration>` 형식을
   유지한다.
 - `getRouteSelection()`은 동일한 쿼리 계약으로 상세 페이지를 복원한다.
@@ -74,7 +74,7 @@
 - 카드와 버튼의 터치 면적은 44px 이상을 유지하는 것이 안전하다.
 - 색상만으로 “첫 번째 추천”을 구분하지 말고, 텍스트/배지/순번을 함께 써야
   한다.
-- `flight-deals-list`는 네트워크 실패 시에도 빈 상태 문구가 명확해야 한다.
+- 외부 항공권 링크는 새 탭으로 열고 `noopener noreferrer`를 유지한다.
 - 지도는 모바일에서 높이를 줄여도 텍스트 일정이 함께 보여야 한다.
 
 ## 5) 콘텐츠 경계
@@ -83,14 +83,14 @@
 
 - 허용: 공항 접근성, 추천 일정, 대표 방문지, 운전 주의사항, 경로 비교
 - 비허용: 예약/결제, 계정, 리뷰, 투표, 실시간 AI 일정 생성, 길찾기 내비게이션
-- 주의: `directFlightReason`, `driveReason`, `seasons`, `drivingNotes`, `flight-prices.json`
+- 주의: `directFlightReason`, `driveReason`, `seasons`, `drivingNotes`
   은 모두 편집된 안내이며 실제 출발 전 재확인이 필요하다.
 
 ## 6) 문서/검토 체크리스트
 
 - `index.html`의 section 순서가 모바일에서 의미 있게 읽히는가
 - shortlist 카드가 selected result와 같은 정보를 중복하지 않는가
-- Top 5 항공권과 상세 지도 흐름이 그대로 남아 있는가
+- 목적지별 항공권 검색 링크와 상세 지도 흐름이 그대로 남아 있는가
 - `route.html`의 지도 실패 시 텍스트 일정으로 대체되는가
 - README와 콘텐츠 근거 문서가 이 정보 경계를 설명하는가
 
@@ -109,5 +109,5 @@
 - `destination-grid`는 화면이 좁아질수록 3열보다 1열/2열 스택으로 읽히는 편이 안전하다.
 - `route-tabs`는 현재처럼 가로 스크롤을 유지하되, 선택 상태와 포커스 스타일이
   터치/키보드 입력 모두에서 분명해야 한다.
-- `flight-deals-section`은 Top 5 정보가 중요하지만, 모바일에서는 메타 문구보다
-  카드의 순위·노선·가격이 먼저 보이도록 압축하는 편이 좋다.
+- `flight-search-section`은 모바일에서 목적지 카드가 한 열로 쌓이고 검색 링크의
+  터치 영역이 44px 이상인지 확인한다.

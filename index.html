@@ -37,39 +37,76 @@
       </section>
 
       <section
-        id="flight-deals"
-        class="flight-deals-section"
-        aria-labelledby="flight-deals-title"
+        id="flight-search"
+        class="flight-search-section"
+        aria-labelledby="flight-search-title"
       >
-        <div class="section-heading flight-deals-heading">
+        <div class="section-heading flight-search-heading">
           <div>
-            <p class="eyebrow">11월 1·2주차 항공권</p>
-            <h2 id="flight-deals-title">직항 왕복 최저가 Top 5</h2>
+            <p class="eyebrow">항공권은 검색 사이트에서 바로 확인</p>
+            <h2 id="flight-search-title">목적지별 항공권 검색</h2>
           </div>
-          <p class="flight-deals-badge">5인 · 2박 3일 / 3박 4일</p>
+          <p class="flight-search-badge">서울 출발 · 5인</p>
         </div>
 
-        <p class="flight-deals-description">
-          인천·김포에서 다카마쓰·요나고로 떠나는 2026년 11월
-          1~14일 출발편을 비교합니다. 가격은 조회 시점의 5인 이코노미 왕복
-          총액이며 예약 단계에서 달라질 수 있어요.
+        <p class="flight-search-description">
+          가격 데이터는 앱에서 수집하지 않습니다. 원하는 목적지를 고른 뒤
+          검색 사이트에서 11월 1·2주차, 성인 5명, 직항 조건을 확인하세요.
         </p>
 
-        <div class="flight-deals-meta">
-          <p id="flight-deals-updated">최신 가격을 불러오는 중입니다.</p>
-          <p>직항만 · 세금 포함 표시 가격 기준</p>
+        <div class="flight-search-grid">
+          <article class="flight-search-card">
+            <p class="flight-search-card__code">TAK · 다카마쓰 공항</p>
+            <h3>서울 → 다카마쓰</h3>
+            <p>세토내해와 가가와 로드트립 항공편을 비교해보세요.</p>
+            <div class="flight-search-actions">
+              <a
+                class="flight-search-link flight-search-link--primary"
+                href="https://www.google.com/travel/flights?hl=ko&amp;curr=KRW&amp;q=Flights%20from%20Seoul%20to%20Takamatsu%20in%20November%202026"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Flights에서 서울 출발 다카마쓰 항공권 검색"
+              >
+                Google Flights
+              </a>
+              <a
+                class="flight-search-link"
+                href="https://www.skyscanner.co.kr/routes/sela/tak/seoul-to-takamatsu.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="스카이스캐너에서 서울 출발 다카마쓰 항공권 검색"
+              >
+                스카이스캐너
+              </a>
+            </div>
+          </article>
+
+          <article class="flight-search-card">
+            <p class="flight-search-card__code">YGJ · 요나고 기타로 공항</p>
+            <h3>서울 → 요나고</h3>
+            <p>산인 지방과 돗토리 로드트립 항공편을 비교해보세요.</p>
+            <div class="flight-search-actions">
+              <a
+                class="flight-search-link flight-search-link--primary"
+                href="https://www.google.com/travel/flights?hl=ko&amp;curr=KRW&amp;q=Flights%20from%20Seoul%20to%20Yonago%20in%20November%202026"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Google Flights에서 서울 출발 요나고 항공권 검색"
+              >
+                Google Flights
+              </a>
+              <a
+                class="flight-search-link"
+                href="https://www.skyscanner.co.kr/routes/sela/ygj/seoul-to-yonago.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="스카이스캐너에서 서울 출발 요나고 항공권 검색"
+              >
+                스카이스캐너
+              </a>
+            </div>
+          </article>
         </div>
-
-        <ol
-          id="flight-deals-list"
-          class="flight-deals-list"
-          aria-live="polite"
-          aria-busy="true"
-        ></ol>
-
-        <p id="flight-deals-empty" class="empty-state" hidden>
-          아직 표시할 항공권 가격이 없습니다.
-        </p>
       </section>
 
       <section class="shortlist-section" aria-labelledby="shortlist-title">

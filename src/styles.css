@@ -223,7 +223,7 @@ main {
   padding-block: clamp(3.5rem, 8vw, 6.5rem);
 }
 
-.flight-deals-section {
+.flight-search-section {
   margin-bottom: clamp(1.5rem, 5vw, 4rem);
   padding: clamp(1.3rem, 5vw, 3.5rem);
   background:
@@ -234,11 +234,11 @@ main {
   box-shadow: var(--shadow);
 }
 
-.flight-deals-heading {
+.flight-search-heading {
   margin-bottom: 1rem;
 }
 
-.flight-deals-badge {
+.flight-search-badge {
   flex: none;
   padding: 0.45rem 0.8rem;
   color: var(--forest-dark);
@@ -248,102 +248,72 @@ main {
   font-weight: 900;
 }
 
-.flight-deals-description {
+.flight-search-description {
   max-width: 50rem;
   color: var(--muted);
 }
 
-.flight-deals-meta {
-  margin-block: 1.25rem 0.85rem;
-  padding-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-  font-size: 0.78rem;
-}
-
-.flight-deals-list {
-  padding: 0;
+.flight-search-grid {
+  margin-top: 1.5rem;
   display: grid;
-  gap: 0.7rem;
-  list-style: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-.flight-deal-card {
+.flight-search-card {
   min-width: 0;
-  padding: 1rem;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1rem;
+  padding: clamp(1.1rem, 3vw, 1.5rem);
   background: var(--surface-soft);
-  border: 1px solid transparent;
-  border-radius: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 1.2rem;
 }
 
-.flight-deal-card:first-child {
-  background: #fff8db;
-  border-color: rgb(244 201 93 / 65%);
+.flight-search-card__code {
+  color: var(--forest);
+  font-size: 0.8rem;
+  font-weight: 800;
 }
 
-.flight-deal-card__rank {
-  width: 2.4rem;
-  height: 2.4rem;
-  display: grid;
-  place-items: center;
+.flight-search-card h3 {
+  margin-top: 0.3rem;
+  font-size: clamp(1.2rem, 3vw, 1.55rem);
+}
+
+.flight-search-card > p:last-of-type {
+  margin-top: 0.55rem;
+  color: var(--muted);
+}
+
+.flight-search-actions {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.flight-search-link {
+  min-height: 2.75rem;
+  padding: 0.7rem 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--forest-dark);
+  background: var(--surface);
+  border: 1px solid var(--forest);
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.flight-search-link--primary {
   color: white;
   background: var(--forest);
-  border-radius: 50%;
-  font-weight: 900;
 }
 
-.flight-deal-card:first-child .flight-deal-card__rank {
-  color: var(--forest-dark);
-  background: var(--sun);
-}
-
-.flight-deal-card__content {
-  min-width: 0;
-  display: grid;
-  gap: 0.25rem;
-}
-
-.flight-deal-card__content h3 {
-  font-size: 1.05rem;
-}
-
-.flight-deal-card__dates,
-.flight-deal-card__airlines {
-  color: var(--muted);
-  font-size: 0.83rem;
-}
-
-.flight-deal-card__price-group {
-  display: grid;
-  justify-items: end;
-  gap: 0.1rem;
-}
-
-.flight-deal-card__price-label {
-  color: var(--muted);
-  font-size: 0.72rem;
-}
-
-.flight-deal-card__price {
-  color: var(--accent-dark);
-  font-size: clamp(1.15rem, 3vw, 1.5rem);
-  white-space: nowrap;
-}
-
-.flight-deal-card__link {
-  width: fit-content;
-  margin-top: 0.3rem;
-  color: var(--forest);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-underline-offset: 0.18em;
+.flight-search-link:hover {
+  color: white;
+  background: var(--forest-dark);
 }
 
 .section-heading {
@@ -772,13 +742,12 @@ footer {
     width: 100%;
   }
 
-  .flight-deals-section {
+  .flight-search-section {
     padding: 1rem;
     border-radius: 1.25rem;
   }
 
-  .flight-deals-heading,
-  .flight-deals-meta {
+  .flight-search-heading {
     display: grid;
   }
 
@@ -790,14 +759,16 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .flight-deal-card {
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
+  .flight-search-grid {
+    grid-template-columns: 1fr;
   }
 
-  .flight-deal-card__price-group {
-    grid-column: 2;
-    justify-items: start;
+  .flight-search-actions {
+    display: grid;
+  }
+
+  .flight-search-link {
+    width: 100%;
   }
 
   .result-section {

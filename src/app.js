@@ -195,51 +195,6 @@ export function createRouteDetailUrl(destinationId, duration) {
   return `./route.html?${params.toString()}`;
 }
 
-function isSafeHttpUrl(value) {
-  if (!isNonEmptyString(value)) return false;
-
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:";
-  } catch {
-    return false;
-  }
-}
-
-function isValidFlightDeal(offer) {
-  return (
-    offer &&
-    typeof offer === "object" &&
-    isNonEmptyString(offer.id) &&
-    isNonEmptyString(offer.origin) &&
-    isNonEmptyString(offer.destination) &&
-    isNonEmptyString(offer.destinationName) &&
-    isNonEmptyString(offer.outboundDate) &&
-    isNonEmptyString(offer.returnDate) &&
-    Number.isInteger(offer.nights) &&
-    offer.nights > 0 &&
-    Number.isFinite(Number(offer.price)) &&
-    Number(offer.price) > 0 &&
-    isNonEmptyString(offer.currency) &&
-    Array.isArray(offer.airlines) &&
-    offer.airlines.length > 0 &&
-    offer.airlines.every(isNonEmptyString)
-  );
-}
-
-export function normalizeFlightDeals(payload, limit = 5) {
-  if (!payload || payload.status !== "ok" || !Array.isArray(payload.offers)) {
-    return [];
-  }
-
-  const safeLimit = Number.isInteger(limit) && limit > 0 ? limit : 5;
-  return payload.offers
-    .filter(isValidFlightDeal)
-    .map((offer) => ({ ...offer, price: Number(offer.price) }))
-    .sort((a, b) => a.price - b.price)
-    .slice(0, safeLimit);
-}
-
 function createElement(tagName, options = {}) {
   const element = document.createElement(tagName);
   if (options.className) element.className = options.className;
@@ -601,122 +556,6 @@ function renderResult(destination, elements) {
   elements.result.hidden = false;
 }
 
-function formatFlightDate(value) {
-  const date = new Date(`${value}T00:00:00Z`);
-  if (Number.isNaN(date.getTime())) return value;
-
-  return new Intl.DateTimeFormat("ko-KR", {
-    month: "numeric",
-    day: "numeric",
-    weekday: "short",
-    timeZone: "UTC",
-  }).format(date);
-}
-
-function formatFlightPrice(price, currency) {
-  try {
-    return new Intl.NumberFormat("ko-KR", {
-      style: "currency",
-      currency,
-      maximumFractionDigits: 0,
-    }).format(price);
-  } catch {
-    return `${Number(price).toLocaleString("ko-KR")} ${currency}`;
-  }
-}
-
-function renderFlightDeals(payload, elements) {
-  const offers = normalizeFlightDeals(payload);
-  elements.flightDealsList.replaceChildren();
-  elements.flightDealsList.setAttribute("aria-busy", "false");
-
-  if (offers.length === 0) {
-    elements.flightDealsEmpty.hidden = false;
-    elements.flightDealsEmpty.textContent =
-      payload?.status === "configuration_required"
-        ? "실시간 가격 API 연결을 준비 중입니다. 연결 후 최신 Top 5가 여기에 표시됩니다."
-        : "현재 조건에서 확인된 항공권이 없습니다. 잠시 후 다시 확인해 주세요.";
-    elements.flightDealsUpdated.textContent =
-      payload?.message ?? "표시할 최신 가격 데이터가 없습니다.";
-    return;
-  }
-
-  elements.flightDealsEmpty.hidden = true;
-  const updatedAt = new Date(payload.updatedAt);
-  elements.flightDealsUpdated.textContent = Number.isNaN(updatedAt.getTime())
-    ? "최신 조회 결과"
-    : `${updatedAt.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })} 기준`;
-
-  offers.forEach((offer, index) => {
-    const item = createElement("li", { className: "flight-deal-card" });
-    const rank = createElement("span", {
-      className: "flight-deal-card__rank",
-      text: String(index + 1),
-    });
-    const content = createElement("div", {
-      className: "flight-deal-card__content",
-    });
-    const route = createElement("h3", {
-      text: `${offer.origin} → ${offer.destinationName}`,
-    });
-    const dates = createElement("p", {
-      className: "flight-deal-card__dates",
-      text: `${formatFlightDate(offer.outboundDate)} 출발 · ${formatFlightDate(offer.returnDate)} 귀국 · ${offer.nights}박 ${offer.nights + 1}일`,
-    });
-    const airlines = createElement("p", {
-      className: "flight-deal-card__airlines",
-      text: `${offer.airlines.join(" · ")} · 직항`,
-    });
-    const price = createElement("strong", {
-      className: "flight-deal-card__price",
-      text: formatFlightPrice(offer.price, offer.currency),
-    });
-    const priceLabel = createElement("span", {
-      className: "flight-deal-card__price-label",
-      text: "5인 왕복 총액",
-    });
-    const priceGroup = createElement("div", {
-      className: "flight-deal-card__price-group",
-    });
-    priceGroup.append(priceLabel, price);
-    content.append(route, dates, airlines);
-    item.append(rank, content, priceGroup);
-
-    if (isSafeHttpUrl(offer.bookingUrl)) {
-      const link = createElement("a", {
-        className: "flight-deal-card__link",
-        text: "Google Flights에서 확인",
-      });
-      link.href = offer.bookingUrl;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      content.append(link);
-    }
-
-    elements.flightDealsList.append(item);
-  });
-}
-
-async function initializeFlightDeals(elements) {
-  try {
-    const response = await fetch(
-      `./src/flight-prices.json?updated=${Date.now()}`,
-      { cache: "no-store" },
-    );
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    renderFlightDeals(await response.json(), elements);
-  } catch {
-    renderFlightDeals(
-      {
-        status: "error",
-        message: "가격 데이터를 불러오지 못했습니다.",
-        offers: [],
-      },
-      elements,
-    );
-  }
-}
-
 function getElements() {
   return {
     destinationList: document.querySelector("#destination-list"),
@@ -728,9 +567,6 @@ function getElements() {
     resultContent: document.querySelector("#result-content"),
     routeTabs: document.querySelector("#route-tabs"),
     routePanel: document.querySelector("#route-panel"),
-    flightDealsList: document.querySelector("#flight-deals-list"),
-    flightDealsUpdated: document.querySelector("#flight-deals-updated"),
-    flightDealsEmpty: document.querySelector("#flight-deals-empty"),
   };
 }
 
@@ -742,7 +578,6 @@ export function initApp(source = destinations) {
 
   const shortlist = normalizeDestinations(source);
   renderShortlist(shortlist, elements);
-  initializeFlightDeals(elements);
 
   const draw = () => {
     const destination = selectRandomDestination(shortlist);

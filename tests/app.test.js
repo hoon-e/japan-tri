@@ -7,7 +7,6 @@ import {
   getDefaultDuration,
   getRouteForDuration,
   normalizeDestinations,
-  normalizeFlightDeals,
   parseDriveEstimate,
   selectRandomDestination,
   summarizeRouteMetrics,
@@ -131,59 +130,6 @@ test("formatRouteEstimate renders the compact dashboard copy for combined metric
   assert.equal(
     formatRouteEstimate({ kilometers: 120, minutes: 190 }),
     "약 120km · 3시간 10분",
-  );
-});
-
-test("normalizeFlightDeals keeps valid offers sorted by price and capped at five", () => {
-  const makeOffer = (id, price) => ({
-    id,
-    origin: "ICN",
-    destination: "TAK",
-    destinationName: "다카마쓰",
-    outboundDate: "2026-11-01",
-    returnDate: "2026-11-03",
-    nights: 2,
-    price,
-    currency: "KRW",
-    airlines: ["테스트항공"],
-  });
-  const offers = [6, 1, 4, 2, 5, 3].map((price) =>
-    makeOffer(String(price), price * 100000),
-  );
-  offers.push({ id: "invalid", price: -1 });
-
-  assert.deepEqual(
-    normalizeFlightDeals({ status: "ok", offers }).map((offer) => offer.id),
-    ["1", "2", "3", "4", "5"],
-  );
-  assert.deepEqual(normalizeFlightDeals({ status: "error", offers }), []);
-  assert.deepEqual(normalizeFlightDeals(null), []);
-});
-
-test("normalizeFlightDeals honors a smaller limit without mutating the source order", () => {
-  const offers = [300000, 100000, 200000].map((price, index) => ({
-    id: String(index),
-    origin: "ICN",
-    destination: "TAK",
-    destinationName: "다카마쓰",
-    outboundDate: "2026-11-01",
-    returnDate: "2026-11-03",
-    nights: 2,
-    price,
-    currency: "KRW",
-    airlines: ["테스트항공"],
-  }));
-  const originalOrder = offers.map((offer) => offer.price);
-
-  assert.deepEqual(
-    normalizeFlightDeals({ status: "ok", offers }, 2).map(
-      (offer) => offer.price,
-    ),
-    [100000, 200000],
-  );
-  assert.deepEqual(
-    offers.map((offer) => offer.price),
-    originalOrder,
   );
 });
 
