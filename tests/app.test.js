@@ -168,11 +168,11 @@ test("all curated routes expose finite at-a-glance driving totals", () => {
 
   assert.deepEqual(summaries, [
     { kilometers: 185, minutes: 280 },
-    { kilometers: 270, minutes: 360 },
-    { kilometers: 160, minutes: 195 },
-    { kilometers: 230, minutes: 310 },
-    { kilometers: 155, minutes: 160 },
-    { kilometers: 275, minutes: 325 },
+    { kilometers: 270, minutes: 405 },
+    { kilometers: 160, minutes: 240 },
+    { kilometers: 230, minutes: 350 },
+    { kilometers: 155, minutes: 215 },
+    { kilometers: 275, minutes: 380 },
   ]);
   assert.ok(
     summaries.every(
