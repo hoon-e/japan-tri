@@ -50,6 +50,18 @@ test("the selected route exposes a descriptive, query-driven detail link", () =>
   assert.match(css, /\.route-detail-link:focus-visible|a:focus-visible/);
 });
 
+test("the overview keeps comparable shortlist and selected route facts", () => {
+  assert.match(app, /className:\s*["']destination-facts["']/);
+  assert.match(app, /className:\s*["']result-dashboard["']/);
+  assert.match(app, /className:\s*["']result-facts["']/);
+  assert.match(app, /className:\s*["']result-cautions["']/);
+  assert.match(app, /className:\s*["']route-dashboard["']/);
+  assert.match(app, /총 거리/);
+  assert.match(app, /운전 시간/);
+  assert.match(css, /\.result-facts\s*\{/);
+  assert.match(css, /\.route-dashboard__facts\s*\{/);
+});
+
 test("the detail page keeps map controls and a textual itinerary accessible", () => {
   assert.match(routeHtml, /<html[^>]+lang=["']ko["']/i);
   assert.match(routeHtml, /class=["']skip-link["'][^>]+href=["']#main-content["']/);

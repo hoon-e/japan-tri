@@ -415,8 +415,7 @@ main {
 }
 
 .destination-card__region,
-.destination-card__airport,
-.destination-card__duration {
+.destination-card__airport {
   color: var(--forest);
   font-size: 0.83rem;
   font-weight: 800;
@@ -426,12 +425,26 @@ main {
   color: var(--muted);
 }
 
+.destination-reason-details {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.destination-reason-details summary {
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  color: var(--forest);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
 .destination-reasons {
-  padding-top: 0.8rem;
+  padding-top: 0.6rem;
   display: grid;
   grid-template-columns: max-content 1fr;
   gap: 0.45rem 0.7rem;
-  border-top: 1px solid var(--line);
   font-size: 0.88rem;
 }
 
@@ -486,20 +499,74 @@ main {
 
 #result-content {
   margin-block: 1.5rem 2.25rem;
-  display: grid;
-  gap: 0.85rem;
 }
 
 #result-content h3 {
   font-size: clamp(1.7rem, 4vw, 2.7rem);
 }
 
-#result-content ul {
+.result-dashboard {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.result-region {
+  color: var(--forest);
+  font-size: 0.83rem;
+  font-weight: 800;
+}
+
+.result-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.result-fact {
+  min-width: 0;
+  padding: 1rem;
+  background: var(--surface-soft);
+  border-radius: 1rem;
+}
+
+.result-fact dt {
+  margin-bottom: 0.2rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.result-fact dd {
+  margin: 0;
+  color: var(--forest-dark);
+  font-weight: 900;
+}
+
+.result-access,
+.result-season,
+.result-highlights,
+.result-cautions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.result-access p,
+.result-season p {
+  color: var(--muted);
+}
+
+.result-cautions {
+  padding: 1rem;
+  background: #fff8db;
+  border: 1px solid rgb(244 201 93 / 55%);
+  border-radius: 1rem;
+}
+
+.result-cautions ul {
   margin: 0;
   padding-left: 1.2rem;
 }
 
-.result-airport,
 .route-day__meta {
   color: var(--forest);
   font-weight: 800;
@@ -562,20 +629,26 @@ main {
 
 .route-dashboard__facts {
   display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 0.35rem 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
   margin-bottom: 0.8rem;
   font-size: 0.88rem;
 }
 
+.route-dashboard__facts div {
+  min-width: 0;
+}
+
 .route-dashboard__facts dt {
-  color: var(--forest);
+  color: var(--muted);
+  font-size: 0.74rem;
   font-weight: 800;
 }
 
 .route-dashboard__facts dd {
   margin: 0;
-  color: var(--muted);
+  color: var(--forest-dark);
+  font-weight: 900;
 }
 
 .route-dashboard__stops {
@@ -730,6 +803,11 @@ footer {
   .result-section {
     padding-inline: 1rem;
     border-radius: 1.25rem;
+  }
+
+  .result-facts,
+  .route-dashboard__facts {
+    grid-template-columns: 1fr 1fr;
   }
 
   .route-day {

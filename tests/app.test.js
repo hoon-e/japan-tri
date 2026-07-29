@@ -3,11 +3,14 @@ import assert from "node:assert/strict";
 
 import {
   createRouteDetailUrl,
+  formatRouteEstimate,
   getDefaultDuration,
   getRouteForDuration,
   normalizeDestinations,
   normalizeFlightDeals,
+  parseDriveEstimate,
   selectRandomDestination,
+  summarizeRouteMetrics,
 } from "../src/app.js";
 import { destinations } from "../src/data.js";
 
@@ -139,6 +142,58 @@ test("getDefaultDuration selects the first available route duration", () => {
   assert.equal(getDefaultDuration(destination), "2n3d");
   assert.equal(getDefaultDuration({ routes: [] }), null);
   assert.equal(getDefaultDuration(null), null);
+});
+
+test("drive estimates normalize the curated Korean distance and duration strings", () => {
+  assert.deepEqual(parseDriveEstimate("약 75km · 2시간"), {
+    kilometers: 75,
+    minutes: 120,
+  });
+  assert.deepEqual(parseDriveEstimate("약 25km · 45분"), {
+    kilometers: 25,
+    minutes: 45,
+  });
+  assert.deepEqual(parseDriveEstimate("약 1,200km"), {
+    kilometers: 1200,
+    minutes: null,
+  });
+  assert.equal(parseDriveEstimate("운전 정보 확인"), null);
+  assert.equal(parseDriveEstimate(null), null);
+});
+
+test("all curated routes expose finite at-a-glance driving totals", () => {
+  const summaries = destinations.flatMap((item) =>
+    item.routes.map((route) => summarizeRouteMetrics(route)),
+  );
+
+  assert.deepEqual(summaries, [
+    { kilometers: 185, minutes: 280 },
+    { kilometers: 270, minutes: 360 },
+    { kilometers: 160, minutes: 195 },
+    { kilometers: 230, minutes: 310 },
+    { kilometers: 155, minutes: 160 },
+    { kilometers: 275, minutes: 325 },
+  ]);
+  assert.ok(
+    summaries.every(
+      (metrics) =>
+        Number.isFinite(metrics.kilometers) &&
+        Number.isFinite(metrics.minutes),
+    ),
+  );
+  assert.equal(summarizeRouteMetrics({ days: [{ drive: "확인 필요" }] }), null);
+});
+
+test("route metric labels remain compact and omit empty minute components", () => {
+  assert.equal(
+    formatRouteEstimate({ kilometers: 185, minutes: 280 }),
+    "약 185km · 4시간 40분",
+  );
+  assert.equal(
+    formatRouteEstimate({ kilometers: 270, minutes: 360 }),
+    "약 270km · 6시간",
+  );
+  assert.equal(formatRouteEstimate(null), "표기된 운전 정보 없음");
 });
 
 test("createRouteDetailUrl addresses all six curated destination-duration routes", () => {
