@@ -45,13 +45,19 @@ test("flight search shortcuts are static, destination-specific, and safe", () =>
     /<a(?=[^>]+class=["'][^"']*flight-search-link[^"']*["'])(?=[^>]+href=["']([^"']+)["'])(?=[^>]+target=["']_blank["'])(?=[^>]+rel=["']noopener noreferrer["'])[^>]*>/gi,
   )].map((match) => match[1]);
 
-  assert.equal(links.length, 4);
+  assert.equal(links.length, 10);
   assert.ok(links.every((href) => href.startsWith("https://")));
   assert.ok(links.some((href) => href.includes("google.com/travel/flights")));
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/tak/")));
   assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/ygj/")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/myj/")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/hsg/")));
+  assert.ok(links.some((href) => href.includes("skyscanner.co.kr/routes/sela/kmi/")));
   assert.match(html, /서울\s*→\s*다카마쓰/);
   assert.match(html, /서울\s*→\s*요나고/);
+  assert.match(html, /서울\s*→\s*마쓰야마/);
+  assert.match(html, /서울\s*→\s*사가/);
+  assert.match(html, /서울\s*→\s*미야자키/);
   assert.doesNotMatch(html, /최저가 Top 5|flight-deals-list|flight-deals-updated|flight-deals-empty/);
   assert.doesNotMatch(app, /flight-prices\.json|initializeFlightDeals|normalizeFlightDeals|fetch\(/);
 });

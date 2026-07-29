@@ -285,4 +285,424 @@ export const destinations = [
       },
     ],
   },
+  {
+    id: "matsuyama-ehime",
+    name: "마쓰야마·에히메",
+    region: "시코쿠 에히메",
+    airport: "마쓰야마 공항",
+    image:
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "산과 바다 사이에 자리한 일본 지방 도시 풍경",
+    summary:
+      "도고온천과 성곽 도시를 시작으로 시마나미 해안과 우치코 옛 거리를 잇는 서부 시코쿠 로드트립입니다.",
+    directFlightReason:
+      "인천–마쓰야마 직항을 이용하면 에히메의 온천·해안 권역에 환승 없이 도착해 공항에서 바로 일정을 시작할 수 있습니다.",
+    driveReason:
+      "마쓰야마 시내, 우치코, 이마바리가 공항에서 반나절 운전권에 있어 온천과 옛 마을, 섬 풍경을 일정별로 나누기 좋습니다.",
+    highlights: ["도고온천", "마쓰야마 성", "우치코", "시마나미 해도"],
+    recommendedDuration: "2박 3일 또는 3박 4일",
+    seasons:
+      "봄·가을은 해안 드라이브가 온화합니다. 겨울 산간 도로와 강풍이 부는 교량 구간은 출발 전 통제를 확인하세요.",
+    drivingNotes: [
+      "마쓰야마 중심가의 노면전차 교차로에서는 신호와 차선 진행 방향을 주의하세요.",
+      "시마나미 해도 교량은 강풍 시 속도 제한이나 이륜차 통제가 생길 수 있습니다.",
+    ],
+    travelLinks: [
+      {
+        category: "관광·명소",
+        label: "에히메 공식 관광 가이드",
+        url: "https://www.visitehimejapan.com/en/",
+      },
+      {
+        category: "음식·문화",
+        label: "마쓰야마 공식 관광 가이드",
+        url: "https://en.matsuyama-sightseeing.com/",
+      },
+      {
+        category: "계절·드라이브",
+        label: "마쓰야마 공항 교통 안내",
+        url: "https://www.matsuyama-airport.co.jp/access/",
+      },
+    ],
+    routes: [
+      {
+        duration: "2n3d",
+        label: "2박 3일",
+        summary: "성곽·온천과 우치코 옛 거리를 묶은 에히메 남부 핵심 루트",
+        days: [
+          {
+            day: 1,
+            title: "마쓰야마 성과 도고온천",
+            base: "마쓰야마 숙박",
+            drive: "약 25km · 50분",
+            stops: ["마쓰야마 공항", "마쓰야마 성", "도고온천"],
+            mapStops: [
+              { name: "마쓰야마 공항", coordinates: [33.8272, 132.6997] },
+              { name: "마쓰야마 성", coordinates: [33.8456, 132.7658] },
+              { name: "도고온천", coordinates: [33.852, 132.7864] },
+            ],
+          },
+          {
+            day: 2,
+            title: "우치코와 오즈 옛 거리",
+            base: "오즈 숙박",
+            drive: "약 105km · 2시간 20분",
+            stops: ["우치코 옛 거리", "오즈 성", "가류산장"],
+            mapStops: [
+              { name: "우치코 옛 거리", coordinates: [33.5515, 132.6503] },
+              { name: "오즈 성", coordinates: [33.5062, 132.5447] },
+              { name: "가류산장", coordinates: [33.5084, 132.5384] },
+            ],
+          },
+          {
+            day: 3,
+            title: "후타미 해안으로 공항 복귀",
+            base: "귀국",
+            drive: "약 75km · 1시간 35분",
+            stops: ["시모나다역", "후타미 해안", "공항 반납"],
+            mapStops: [
+              { name: "시모나다역", coordinates: [33.6552, 132.5891] },
+              { name: "후타미 해안", coordinates: [33.6834, 132.6328] },
+              { name: "공항 반납", coordinates: [33.8272, 132.6997] },
+            ],
+          },
+        ],
+      },
+      {
+        duration: "3n4d",
+        label: "3박 4일",
+        summary: "마쓰야마에서 이마바리와 시마나미 해안까지 확장하는 순환 루트",
+        days: [
+          {
+            day: 1,
+            title: "공항 도착과 도고 산책",
+            base: "마쓰야마 숙박",
+            drive: "약 25km · 50분",
+            stops: ["마쓰야마 공항", "마쓰야마 성", "도고온천"],
+            mapStops: [
+              { name: "마쓰야마 공항", coordinates: [33.8272, 132.6997] },
+              { name: "마쓰야마 성", coordinates: [33.8456, 132.7658] },
+              { name: "도고온천", coordinates: [33.852, 132.7864] },
+            ],
+          },
+          {
+            day: 2,
+            title: "이마바리와 구루시마 해협",
+            base: "이마바리 숙박",
+            drive: "약 95km · 2시간 10분",
+            stops: ["이마바리 성", "구루시마 해협 전망대", "오시마"],
+            mapStops: [
+              { name: "이마바리 성", coordinates: [34.0631, 133.0062] },
+              { name: "구루시마 해협 전망대", coordinates: [34.1146, 132.9789] },
+              { name: "오시마", coordinates: [34.1575, 133.0371] },
+            ],
+          },
+          {
+            day: 3,
+            title: "산길 너머 우치코",
+            base: "우치코 숙박",
+            drive: "약 125km · 2시간 40분",
+            stops: ["사이조 우치누키", "우치코 옛 거리", "우치코자"],
+            mapStops: [
+              { name: "사이조 우치누키", coordinates: [33.9196, 133.1812] },
+              { name: "우치코 옛 거리", coordinates: [33.5515, 132.6503] },
+              { name: "우치코자", coordinates: [33.5489, 132.6491] },
+            ],
+          },
+          {
+            day: 4,
+            title: "해안길로 공항 복귀",
+            base: "귀국",
+            drive: "약 70km · 1시간 30분",
+            stops: ["시모나다역", "후타미 해안", "공항 반납"],
+            mapStops: [
+              { name: "시모나다역", coordinates: [33.6552, 132.5891] },
+              { name: "후타미 해안", coordinates: [33.6834, 132.6328] },
+              { name: "공항 반납", coordinates: [33.8272, 132.6997] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "saga-ureshino-arita",
+    name: "사가·우레시노·아리타",
+    region: "규슈 사가",
+    airport: "규슈 사가 국제공항",
+    image:
+      "https://images.unsplash.com/photo-1526481280695-3c687fd643ed?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "안개 낀 산과 전통 마을이 어우러진 일본 시골 풍경",
+    summary:
+      "도자기 마을과 녹차 산지, 온천을 낮은 구릉 도로로 잇는 서부 규슈의 차분한 문화 로드트립입니다.",
+    directFlightReason:
+      "인천–사가 직항으로 서부 규슈에 바로 들어가 공항 렌터카 거점에서 아리타와 우레시노 방면으로 이동할 수 있습니다.",
+    driveReason:
+      "사가 평야를 중심으로 아리타, 우레시노, 가라쓰가 약 한두 시간권에 있어 도자기·온천·해안 주제를 짧은 일정으로 묶기 좋습니다.",
+    highlights: ["아리타 도자기 마을", "우레시노 온천", "가라쓰 성", "요시노가리 유적"],
+    recommendedDuration: "2박 3일 또는 3박 4일",
+    seasons:
+      "봄의 녹음과 가을 도자기 행사가 좋습니다. 장마철 저지대 침수와 겨울 산간 결빙 가능성을 확인하세요.",
+    drivingNotes: [
+      "아리타 도자기 축제 기간에는 중심가 교통 통제와 임시 주차장 안내를 확인하세요.",
+      "우레시노·다케오 사이 산길은 안개와 야간 시야 저하에 유의하세요.",
+    ],
+    travelLinks: [
+      {
+        category: "관광·명소",
+        label: "사가 공식 관광 가이드",
+        url: "https://www.saga-tripgenius.com/",
+      },
+      {
+        category: "음식·문화",
+        label: "아리타 관광 협회",
+        url: "https://www.arita.jp.e.ew.hp.transer.com/",
+      },
+      {
+        category: "계절·드라이브",
+        label: "사가 공항 교통 안내",
+        url: "https://saga-ab.jp/access/",
+      },
+    ],
+    routes: [
+      {
+        duration: "2n3d",
+        label: "2박 3일",
+        summary: "우레시노 온천과 아리타 도자기 마을을 잇는 서부 사가 루트",
+        days: [
+          {
+            day: 1,
+            title: "사가 평야와 역사 유적",
+            base: "사가 숙박",
+            drive: "약 45km · 1시간 10분",
+            stops: ["사가 공항", "사가 성터", "요시노가리 유적"],
+            mapStops: [
+              { name: "사가 공항", coordinates: [33.1497, 130.3022] },
+              { name: "사가 성터", coordinates: [33.2452, 130.3015] },
+              { name: "요시노가리 유적", coordinates: [33.3246, 130.3843] },
+            ],
+          },
+          {
+            day: 2,
+            title: "도자기 마을과 온천",
+            base: "우레시노 숙박",
+            drive: "약 95km · 2시간 10분",
+            stops: ["아리타 도자기 마을", "이마리 오카와치야마", "우레시노 온천"],
+            mapStops: [
+              { name: "아리타 도자기 마을", coordinates: [33.183, 129.8817] },
+              { name: "이마리 오카와치야마", coordinates: [33.225, 129.8629] },
+              { name: "우레시노 온천", coordinates: [33.0961, 129.9847] },
+            ],
+          },
+          {
+            day: 3,
+            title: "차밭과 공항 복귀",
+            base: "귀국",
+            drive: "약 55km · 1시간 15분",
+            stops: ["우레시노 차밭", "히젠하마슈쿠", "공항 반납"],
+            mapStops: [
+              { name: "우레시노 차밭", coordinates: [33.1076, 130.004] },
+              { name: "히젠하마슈쿠", coordinates: [33.0911, 130.0991] },
+              { name: "공항 반납", coordinates: [33.1497, 130.3022] },
+            ],
+          },
+        ],
+      },
+      {
+        duration: "3n4d",
+        label: "3박 4일",
+        summary: "도자기·온천에 가라쓰 해안과 성곽 풍경을 더한 사가 순환 루트",
+        days: [
+          {
+            day: 1,
+            title: "사가 도착과 유적 산책",
+            base: "사가 숙박",
+            drive: "약 45km · 1시간 10분",
+            stops: ["사가 공항", "사가 성터", "요시노가리 유적"],
+            mapStops: [
+              { name: "사가 공항", coordinates: [33.1497, 130.3022] },
+              { name: "사가 성터", coordinates: [33.2452, 130.3015] },
+              { name: "요시노가리 유적", coordinates: [33.3246, 130.3843] },
+            ],
+          },
+          {
+            day: 2,
+            title: "가라쓰 해안과 소나무 숲",
+            base: "가라쓰 숙박",
+            drive: "약 105km · 2시간 25분",
+            stops: ["가라쓰 성", "니지노마쓰바라", "요부코"],
+            mapStops: [
+              { name: "가라쓰 성", coordinates: [33.4554, 129.9782] },
+              { name: "니지노마쓰바라", coordinates: [33.4418, 130.0074] },
+              { name: "요부코", coordinates: [33.5407, 129.8958] },
+            ],
+          },
+          {
+            day: 3,
+            title: "이마리와 아리타 도자기 길",
+            base: "우레시노 숙박",
+            drive: "약 95km · 2시간 20분",
+            stops: ["이마리 오카와치야마", "아리타 도자기 마을", "우레시노 온천"],
+            mapStops: [
+              { name: "이마리 오카와치야마", coordinates: [33.225, 129.8629] },
+              { name: "아리타 도자기 마을", coordinates: [33.183, 129.8817] },
+              { name: "우레시노 온천", coordinates: [33.0961, 129.9847] },
+            ],
+          },
+          {
+            day: 4,
+            title: "녹차 마을에서 공항으로",
+            base: "귀국",
+            drive: "약 60km · 1시간 20분",
+            stops: ["우레시노 차밭", "히젠하마슈쿠", "공항 반납"],
+            mapStops: [
+              { name: "우레시노 차밭", coordinates: [33.1076, 130.004] },
+              { name: "히젠하마슈쿠", coordinates: [33.0911, 130.0991] },
+              { name: "공항 반납", coordinates: [33.1497, 130.3022] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "miyazaki-takachiho-nichinan",
+    name: "미야자키·다카치호·니치난",
+    region: "규슈 미야자키",
+    airport: "미야자키 부겐빌리아 공항",
+    image:
+      "https://images.unsplash.com/photo-1470214304380-aadaedcfff1b?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "푸른 바다와 숲이 맞닿은 일본 남부 해안 풍경",
+    summary:
+      "태평양 해안과 신화의 협곡, 삼나무 숲을 남북으로 잇는 남규슈의 풍경 중심 로드트립입니다.",
+    directFlightReason:
+      "인천–미야자키 직항을 이용하면 남동 규슈에 바로 도착해 공항 렌터카로 니치난 해안이나 북부 산간으로 출발할 수 있습니다.",
+    driveReason:
+      "공항 남쪽 니치난은 해안도로, 북쪽 다카치호는 협곡과 신사라는 뚜렷한 테마가 있어 기간별 방향을 명확히 구성할 수 있습니다.",
+    highlights: ["다카치호 협곡", "아오시마", "우도신궁", "오비 성하마을"],
+    recommendedDuration: "2박 3일 또는 3박 4일",
+    seasons:
+      "봄·가을은 해안과 협곡 산책이 좋습니다. 여름 태풍과 폭우, 겨울 다카치호 산간 결빙을 확인하세요.",
+    drivingNotes: [
+      "다카치호 방면은 굽은 산길과 터널이 이어지므로 일몰 전 도착을 목표로 하세요.",
+      "태풍·폭우 뒤 니치난 해안도로의 낙석과 통제 정보를 확인하세요.",
+    ],
+    travelLinks: [
+      {
+        category: "관광·명소",
+        label: "미야자키 공식 관광 가이드",
+        url: "https://www.kanko-miyazaki.jp/",
+      },
+      {
+        category: "음식·문화",
+        label: "니치난 공식 관광 정보",
+        url: "https://www.kankou-nichinan.jp/",
+      },
+      {
+        category: "계절·드라이브",
+        label: "미야자키 공항 교통 안내",
+        url: "https://www.miyazaki-airport.co.jp/access",
+      },
+    ],
+    routes: [
+      {
+        duration: "2n3d",
+        label: "2박 3일",
+        summary: "아오시마에서 오비까지 태평양을 따라가는 니치난 해안 루트",
+        days: [
+          {
+            day: 1,
+            title: "공항에서 아오시마로",
+            base: "아오시마 숙박",
+            drive: "약 25km · 45분",
+            stops: ["미야자키 공항", "아오시마 신사", "호리키리 고개"],
+            mapStops: [
+              { name: "미야자키 공항", coordinates: [31.8772, 131.4486] },
+              { name: "아오시마 신사", coordinates: [31.8036, 131.4752] },
+              { name: "호리키리 고개", coordinates: [31.7589, 131.4722] },
+            ],
+          },
+          {
+            day: 2,
+            title: "니치난 해안과 오비",
+            base: "니치난 숙박",
+            drive: "약 85km · 2시간 10분",
+            stops: ["우도신궁", "오비 성하마을", "사카타니 계단식 논"],
+            mapStops: [
+              { name: "우도신궁", coordinates: [31.6508, 131.466] },
+              { name: "오비 성하마을", coordinates: [31.6264, 131.351] },
+              { name: "사카타니 계단식 논", coordinates: [31.6782, 131.3108] },
+            ],
+          },
+          {
+            day: 3,
+            title: "해안 전망길로 공항 복귀",
+            base: "귀국",
+            drive: "약 70km · 1시간 35분",
+            stops: ["선멧세 니치난", "아오시마 해안", "공항 반납"],
+            mapStops: [
+              { name: "선멧세 니치난", coordinates: [31.6847, 131.4608] },
+              { name: "아오시마 해안", coordinates: [31.8064, 131.4702] },
+              { name: "공항 반납", coordinates: [31.8772, 131.4486] },
+            ],
+          },
+        ],
+      },
+      {
+        duration: "3n4d",
+        label: "3박 4일",
+        summary: "니치난 해안에 다카치호 협곡과 신화 마을을 더한 남북 종단 루트",
+        days: [
+          {
+            day: 1,
+            title: "아오시마와 미야자키 해안",
+            base: "미야자키 숙박",
+            drive: "약 35km · 1시간",
+            stops: ["미야자키 공항", "아오시마 신사", "미야자키 시내"],
+            mapStops: [
+              { name: "미야자키 공항", coordinates: [31.8772, 131.4486] },
+              { name: "아오시마 신사", coordinates: [31.8036, 131.4752] },
+              { name: "미야자키 시내", coordinates: [31.9111, 131.4239] },
+            ],
+          },
+          {
+            day: 2,
+            title: "산길 따라 다카치호",
+            base: "다카치호 숙박",
+            drive: "약 145km · 3시간",
+            stops: ["미야자키 신궁", "다카치호 협곡", "다카치호 신사"],
+            mapStops: [
+              { name: "미야자키 신궁", coordinates: [31.9381, 131.4295] },
+              { name: "다카치호 협곡", coordinates: [32.7117, 131.3015] },
+              { name: "다카치호 신사", coordinates: [32.7098, 131.3051] },
+            ],
+          },
+          {
+            day: 3,
+            title: "신화 마을에서 니치난으로",
+            base: "아오시마 숙박",
+            drive: "약 185km · 3시간 40분",
+            stops: ["아마노이와토 신사", "휴가 해안", "아오시마"],
+            mapStops: [
+              { name: "아마노이와토 신사", coordinates: [32.734, 131.3492] },
+              { name: "휴가 해안", coordinates: [32.4257, 131.6744] },
+              { name: "아오시마", coordinates: [31.8036, 131.4752] },
+            ],
+          },
+          {
+            day: 4,
+            title: "우도신궁과 공항 복귀",
+            base: "귀국",
+            drive: "약 90km · 2시간 10분",
+            stops: ["우도신궁", "호리키리 고개", "공항 반납"],
+            mapStops: [
+              { name: "우도신궁", coordinates: [31.6508, 131.466] },
+              { name: "호리키리 고개", coordinates: [31.7589, 131.4722] },
+              { name: "공항 반납", coordinates: [31.8772, 131.4486] },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
