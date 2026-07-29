@@ -2,6 +2,7 @@ import { destinations } from "./data.js";
 
 const DAY_COLORS = ["#c9472d", "#1f684f", "#3567a8", "#8b4c9c"];
 const VALID_DURATIONS = new Set(["2n3d", "3n4d"]);
+const LEAFLET_LOAD_TIMEOUT_MS = 4_000;
 const JAPAN_BOUNDS = {
   minLatitude: 24,
   maxLatitude: 46,
@@ -156,6 +157,22 @@ function renderLegend(route, list) {
   list.replaceChildren(fragment);
 }
 
+function waitForLeafletLoad() {
+  if (document.readyState === "complete") return Promise.resolve();
+
+  return new Promise((resolve) => {
+    let timeoutId;
+    const finish = () => {
+      window.removeEventListener("load", finish);
+      clearTimeout(timeoutId);
+      resolve();
+    };
+
+    window.addEventListener("load", finish, { once: true });
+    timeoutId = setTimeout(finish, LEAFLET_LOAD_TIMEOUT_MS);
+  });
+}
+
 function renderDayFilter(route, layers, filter) {
   const layerByDay = new Map(layers.map((item) => [item.day, item.layer]));
   const buttons = [];
@@ -196,6 +213,9 @@ function renderDayFilter(route, layers, filter) {
 
 function renderMap(route, elements) {
   renderLegend(route, elements.legendList);
+  elements.mapStatus.textContent = "지도를 불러오는 중입니다.";
+
+  if (!window.L) await waitForLeafletLoad();
 
   if (!window.L) {
     elements.map.hidden = true;
