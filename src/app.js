@@ -16,6 +16,8 @@ const REQUIRED_DESTINATION_FIELDS = [
 export function normalizeDestinations(items) {
   if (!Array.isArray(items)) return [];
 
+  const seenIds = new Set();
+
   return items.filter((item) => {
     if (!item || typeof item !== "object") return false;
 
@@ -35,7 +37,10 @@ export function normalizeDestinations(items) {
           route.days.length > 0,
       );
 
-    return hasRequiredText && hasRoutes;
+    if (!hasRequiredText || !hasRoutes || seenIds.has(item.id)) return false;
+
+    seenIds.add(item.id);
+    return true;
   });
 }
 
