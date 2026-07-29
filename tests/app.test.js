@@ -160,6 +160,33 @@ test("normalizeFlightDeals keeps valid offers sorted by price and capped at five
   assert.deepEqual(normalizeFlightDeals(null), []);
 });
 
+test("normalizeFlightDeals honors a smaller limit without mutating the source order", () => {
+  const offers = [300000, 100000, 200000].map((price, index) => ({
+    id: String(index),
+    origin: "ICN",
+    destination: "TAK",
+    destinationName: "다카마쓰",
+    outboundDate: "2026-11-01",
+    returnDate: "2026-11-03",
+    nights: 2,
+    price,
+    currency: "KRW",
+    airlines: ["테스트항공"],
+  }));
+  const originalOrder = offers.map((offer) => offer.price);
+
+  assert.deepEqual(
+    normalizeFlightDeals({ status: "ok", offers }, 2).map(
+      (offer) => offer.price,
+    ),
+    [100000, 200000],
+  );
+  assert.deepEqual(
+    offers.map((offer) => offer.price),
+    originalOrder,
+  );
+});
+
 test("getRouteForDuration returns the matching curated route and no foreign route", () => {
   assert.equal(getRouteForDuration(destination, "3n4d"), routes[1]);
   assert.equal(getRouteForDuration(destination, "missing"), null);

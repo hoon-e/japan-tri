@@ -42,6 +42,20 @@ test("the mobile stylesheet includes a narrow-screen layout without forced page 
   assert.match(css, /@media\s*\([^)]*max-width[^}]+\}[\s\S]*\.route-detail-link\s*\{[^}]*width\s*:\s*100%/i);
 });
 
+test("the overview components keep mobile-safe grids and touch targets", () => {
+  assert.match(
+    css,
+    /\.destination-grid\s*\{[^}]*grid-template-columns\s*:\s*repeat\(3,\s*minmax\(0,\s*1fr\)\)/is,
+  );
+  assert.match(
+    css,
+    /@media\s*\([^)]*max-width\s*:\s*40rem[^}]*\}[\s\S]*?\.destination-grid\s*\{[^}]*grid-template-columns\s*:\s*1fr/is,
+  );
+  assert.match(css, /\.destination-card\s*\{[^}]*min-width\s*:\s*0/is);
+  assert.match(css, /\.route-tabs\s*\{[^}]*overflow-x\s*:\s*auto/is);
+  assert.match(css, /\.route-tab\s*\{[^}]*min-height\s*:\s*2\.75rem/is);
+});
+
 test("the selected route exposes a descriptive, query-driven detail link", () => {
   assert.match(app, /className:\s*["']route-detail-link["']/);
   assert.match(app, /destination:\s*destinationId/);
@@ -56,10 +70,23 @@ test("the overview keeps comparable shortlist and selected route facts", () => {
   assert.match(app, /className:\s*["']result-facts["']/);
   assert.match(app, /className:\s*["']result-cautions["']/);
   assert.match(app, /className:\s*["']route-dashboard["']/);
+  assert.match(app, /className:\s*["']route-dashboard__stops["']/);
   assert.match(app, /총 거리/);
   assert.match(app, /운전 시간/);
+  assert.match(app, /일자별 빠른 보기/);
   assert.match(css, /\.result-facts\s*\{/);
   assert.match(css, /\.route-dashboard__facts\s*\{/);
+});
+
+test("the duration tabs preserve accessible state and keyboard navigation", () => {
+  assert.match(app, /tab\.setAttribute\(\s*["']role["'],\s*["']tab["']\s*\)/);
+  assert.match(app, /tab\.setAttribute\(\s*["']aria-controls["'],\s*["']route-panel["']\s*\)/);
+  assert.match(app, /tab\.setAttribute\(\s*["']aria-selected["'],\s*String\(isActive\)\s*\)/);
+  assert.match(app, /event\.key === ["']ArrowRight["']/);
+  assert.match(app, /event\.key === ["']ArrowLeft["']/);
+  assert.match(app, /event\.key === ["']Home["']/);
+  assert.match(app, /event\.key === ["']End["']/);
+  assert.match(app, /event\.preventDefault\(\)/);
 });
 
 test("the detail page keeps map controls and a textual itinerary accessible", () => {
