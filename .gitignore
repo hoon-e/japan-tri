@@ -9,3 +9,5 @@ test-results/
 .omx/state/
 .omx/metrics.json
 .omx/tmux-hook.json
+.omx/team/
+.omx/reports/
