@@ -50,21 +50,16 @@ test("the selected route exposes a descriptive, query-driven detail link", () =>
   assert.match(css, /\.route-detail-link:focus-visible|a:focus-visible/);
 });
 
-test("the selected-trip dashboard exposes the overview hierarchy used for route comparison", () => {
+test("the overview keeps comparable shortlist and selected route facts", () => {
+  assert.match(app, /className:\s*["']destination-facts["']/);
+  assert.match(app, /className:\s*["']result-dashboard["']/);
+  assert.match(app, /className:\s*["']result-facts["']/);
+  assert.match(app, /className:\s*["']result-cautions["']/);
   assert.match(app, /className:\s*["']route-dashboard["']/);
-  assert.match(app, /className:\s*["']route-dashboard__facts["']/);
-  assert.match(app, /className:\s*["']route-dashboard__stops["']/);
-  assert.match(app, /한눈에 보는 이번 루트/);
-  assert.match(app, /일자별 빠른 보기/);
-  assert.match(app, /마지막 숙박/);
-});
-
-test("the shortlist cards expose comparable quick facts for destination scanning", () => {
-  assert.match(app, /className:\s*["']destination-reasons["']/);
-  assert.match(app, /className:\s*["']tag-list["']/);
-  assert.match(app, /직항 접근성/);
-  assert.match(app, /드라이브 적합성/);
-  assert.match(app, /대표 방문지/);
+  assert.match(app, /총 거리/);
+  assert.match(app, /운전 시간/);
+  assert.match(css, /\.result-facts\s*\{/);
+  assert.match(css, /\.route-dashboard__facts\s*\{/);
 });
 
 test("the detail page keeps map controls and a textual itinerary accessible", () => {

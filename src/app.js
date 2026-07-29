@@ -60,7 +60,7 @@ export function parseDriveEstimate(drive) {
 
   const kmMatch = drive.match(/약\s*([\d,.]+)\s*km/i);
   const hoursMatch = drive.match(/(\d+)\s*시간(?:\s*(\d+)\s*분)?/);
-  const minutesOnlyMatch = drive.match(/약\s*(\d+)\s*분/);
+  const minutesOnlyMatch = drive.match(/(?:^|[·\s])(\d+)\s*분/);
 
   const kilometers = kmMatch ? Number(kmMatch[1].replaceAll(",", "")) : null;
   if (kilometers !== null && !Number.isFinite(kilometers)) return null;
@@ -79,22 +79,36 @@ export function parseDriveEstimate(drive) {
 }
 
 export function summarizeRouteMetrics(route) {
-  const metrics = (route?.days ?? []).reduce(
+  const days = route?.days ?? [];
+  if (days.length === 0) return null;
+
+  const metrics = days.reduce(
     (accumulator, day) => {
       const estimate = parseDriveEstimate(day.drive);
-      if (estimate?.kilometers !== null) {
+      if (Number.isFinite(estimate?.kilometers)) {
         accumulator.kilometers += estimate.kilometers;
+      } else {
+        accumulator.hasAllDistances = false;
       }
-      if (estimate?.minutes !== null) {
+      if (Number.isFinite(estimate?.minutes)) {
         accumulator.minutes += estimate.minutes;
+      } else {
+        accumulator.hasAllDurations = false;
       }
       return accumulator;
     },
-    { kilometers: 0, minutes: 0 },
+    {
+      kilometers: 0,
+      minutes: 0,
+      hasAllDistances: true,
+      hasAllDurations: true,
+    },
   );
 
-  if (metrics.kilometers === 0 && metrics.minutes === 0) return null;
-  return metrics;
+  const kilometers = metrics.hasAllDistances ? metrics.kilometers : null;
+  const minutes = metrics.hasAllDurations ? metrics.minutes : null;
+  if (kilometers === null && minutes === null) return null;
+  return { kilometers, minutes };
 }
 
 export function formatRouteEstimate(metrics) {
@@ -107,10 +121,19 @@ export function formatRouteEstimate(metrics) {
   if (metrics.minutes > 0) {
     const hours = Math.floor(metrics.minutes / 60);
     const minutes = metrics.minutes % 60;
-    parts.push(hours > 0 ? `${hours}시간 ${minutes}분` : `${minutes}분`);
+    if (hours > 0) {
+      parts.push(minutes > 0 ? `${hours}시간 ${minutes}분` : `${hours}시간`);
+    } else {
+      parts.push(`${minutes}분`);
+    }
   }
 
   return parts.join(" · ");
+}
+
+function getSeasonSummary(seasons) {
+  if (!isNonEmptyString(seasons)) return "출발 전 계절 안내 확인";
+  return seasons.split(/[,.]/, 1)[0].trim();
 }
 
 /**
@@ -247,7 +270,7 @@ function renderDestinationCard(destination) {
   const facts = createElement("dl", { className: "destination-facts" });
   [
     ["추천 일정", destination.recommendedDuration],
-    ["비교 루트", `${destination.routes.length}개`],
+    ["여행 시기", getSeasonSummary(destination.seasons)],
   ].forEach(([term, description]) => {
     facts.append(
       createElement("dt", { text: term }),
@@ -255,6 +278,12 @@ function renderDestinationCard(destination) {
     );
   });
 
+  const reasonDetails = createElement("details", {
+    className: "destination-reason-details",
+  });
+  const reasonSummary = createElement("summary", {
+    text: "후보 선정 이유 보기",
+  });
   const reasons = createElement("dl", { className: "destination-reasons" });
   [
     ["직항 접근성", destination.directFlightReason],
@@ -265,6 +294,7 @@ function renderDestinationCard(destination) {
       createElement("dd", { text: description }),
     );
   });
+  reasonDetails.append(reasonSummary, reasons);
 
   const highlights = createElement("ul", {
     className: "tag-list",
@@ -274,12 +304,15 @@ function renderDestinationCard(destination) {
     highlights.append(createElement("li", { text: highlight }));
   });
 
-  const duration = createElement("p", {
-    className: "destination-card__duration",
-    text: `추천 일정 · ${destination.recommendedDuration}`,
-  });
-
-  body.append(region, heading, airport, summary, facts, reasons, highlights, duration);
+  body.append(
+    region,
+    heading,
+    airport,
+    summary,
+    facts,
+    highlights,
+    reasonDetails,
+  );
   card.append(image, body);
   return card;
 }
@@ -329,17 +362,35 @@ function renderRoute(destination, route, panel) {
   const dashboardHeading = createElement("h4", { text: "한눈에 보는 이번 루트" });
   const dashboardFacts = createElement("dl", { className: "route-dashboard__facts" });
   const routeMetrics = summarizeRouteMetrics(route);
-  const finalDay = route.days.at(-1);
+  const totalStops = route.days.reduce(
+    (count, day) => count + day.stops.length,
+    0,
+  );
+  const distance =
+    routeMetrics?.kilometers > 0
+      ? `약 ${routeMetrics.kilometers.toFixed(0)}km`
+      : "표기 없음";
+  const driveTime =
+    routeMetrics?.minutes > 0
+      ? formatRouteEstimate({
+          kilometers: 0,
+          minutes: routeMetrics.minutes,
+        })
+      : "표기 없음";
   [
     ["기간", route.label],
-    ["총 일정", `${route.days.length}일`],
-    ["총 주행", formatRouteEstimate(routeMetrics)],
-    ["마지막 숙박", finalDay?.base ?? "정보 없음"],
+    ["총 거리", distance],
+    ["운전 시간", driveTime],
+    ["방문 지점", `${totalStops}곳`],
   ].forEach(([term, description]) => {
-    dashboardFacts.append(
+    const fact = createElement("div", {
+      className: "route-dashboard__fact",
+    });
+    fact.append(
       createElement("dt", { text: term }),
       createElement("dd", { text: description }),
     );
+    dashboardFacts.append(fact);
   });
   const dashboardStops = createElement("ul", {
     className: "route-dashboard__stops",
@@ -483,29 +534,69 @@ function renderResult(destination, elements) {
     return;
   }
 
+  const dashboard = createElement("div", { className: "result-dashboard" });
+  const region = createElement("p", {
+    className: "result-region",
+    text: destination.region,
+  });
   const heading = createElement("h3", { text: destination.name });
   const summary = createElement("p", { text: destination.summary });
-  const airport = createElement("p", {
-    className: "result-airport",
-    text: `렌터카 시작점 · ${destination.airport}`,
+  const facts = createElement("dl", { className: "result-facts" });
+  [
+    ["도착·렌터카 거점", destination.airport],
+    ["추천 일정", destination.recommendedDuration],
+  ].forEach(([term, description]) => {
+    facts.append(
+      createElement("div", { className: "result-fact" }),
+    );
+    facts.lastElementChild.append(
+      createElement("dt", { text: term }),
+      createElement("dd", { text: description }),
+    );
   });
-  const seasonHeading = createElement("h4", { text: "언제 가면 좋을까요?" });
-  const season = createElement("p", { text: destination.seasons });
+  const access = createElement("section", { className: "result-access" });
+  access.append(
+    createElement("h4", { text: "직항으로 닿는 방법" }),
+    createElement("p", { text: destination.directFlightReason }),
+  );
+  const season = createElement("section", { className: "result-season" });
+  season.append(
+    createElement("h4", { text: "가기 좋은 때" }),
+    createElement("p", { text: destination.seasons }),
+  );
+  const highlights = createElement("section", {
+    className: "result-highlights",
+  });
+  const highlightList = createElement("ul", { className: "tag-list" });
+  highlightList.setAttribute("aria-label", "선정 여행지 대표 방문지");
+  (destination.highlights ?? []).forEach((highlight) => {
+    highlightList.append(createElement("li", { text: highlight }));
+  });
+  highlights.append(
+    createElement("h4", { text: "대표 방문지" }),
+    highlightList,
+  );
+  const cautions = createElement("aside", {
+    className: "result-cautions",
+  });
   const notesHeading = createElement("h4", { text: "운전 전 확인" });
   const notes = createElement("ul");
   (destination.drivingNotes ?? []).forEach((note) => {
     notes.append(createElement("li", { text: note }));
   });
-
-  elements.resultContent.append(
+  cautions.append(notesHeading, notes);
+  dashboard.append(
+    region,
     heading,
     summary,
-    airport,
-    seasonHeading,
+    facts,
+    access,
     season,
-    notesHeading,
-    notes,
+    highlights,
+    cautions,
   );
+
+  elements.resultContent.append(dashboard);
   renderRouteTabs(destination, elements);
   elements.result.hidden = false;
 }
