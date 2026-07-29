@@ -28,21 +28,21 @@ export const destinations = [
       "고토히라와 다카마쓰 중심가는 보행자가 많아 지정 주차장을 이용하세요.",
       "세토대교와 해안 도로는 강풍 시 속도 제한이 생길 수 있습니다.",
     ],
-    travelLinks: [
+    referenceLinks: [
       {
         category: "관광·명소",
-        label: "가가와 공식 관광 가이드",
-        url: "https://www.my-kagawa.jp/en",
+        label: "가가와현 공식 관광 가이드",
+        url: "https://www.my-kagawa.jp/",
       },
       {
         category: "음식·문화",
-        label: "사누키 우동 관광 정보",
-        url: "https://www.my-kagawa.jp/en/see-and-do/10002",
+        label: "고토히라 관광협회",
+        url: "https://www.kotohira-kankou.jp/",
       },
       {
         category: "계절·드라이브",
-        label: "다카마쓰 공항 교통 안내",
-        url: "https://www.takamatsu-airport.com/en/access/",
+        label: "미토요시 관광 안내",
+        url: "https://www.city.mitoyo.lg.jp/kakuka/seisaku/kanko/",
       },
     ],
     routes: [
@@ -167,21 +167,21 @@ export const destinations = [
       "겨울 산간 구간은 적설이 많아 렌터카의 스노타이어 장착 여부를 확인하세요.",
       "해 질 무렵 지방 도로에서는 야생동물 출현에 유의하세요.",
     ],
-    travelLinks: [
+    referenceLinks: [
       {
         category: "관광·명소",
-        label: "돗토리 공식 관광 가이드",
-        url: "https://www.tottori-tour.jp/en/",
+        label: "돗토리현 공식 관광 사이트",
+        url: "https://www.tottori-tour.jp/",
       },
       {
         category: "음식·문화",
-        label: "시마네 공식 관광 가이드",
-        url: "https://www.kankou-shimane.com/en/",
+        label: "시마네현 공식 관광 가이드",
+        url: "https://www.kankou-shimane.com/",
       },
       {
         category: "계절·드라이브",
-        label: "요나고 공항 교통 안내",
-        url: "https://www.yonago-air.com/access",
+        label: "다이센 관광 안내",
+        url: "https://tourismdaisen.com/",
       },
     ],
     routes: [
