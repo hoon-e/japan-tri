@@ -39,6 +39,8 @@ test("the public shortlist contains unique, fully described destinations", () =>
 });
 
 test("every destination has complete, internally consistent duration routes", () => {
+  const routeIds = new Set();
+
   for (const destination of destinations) {
     assert.ok(destination.routes.length >= 2, `${destination.id} needs at least two routes`);
 
@@ -49,6 +51,7 @@ test("every destination has complete, internally consistent duration routes", ()
       assert.ok(route.summary);
       assert.ok(!durations.has(route.duration), `${destination.id} repeats ${route.duration}`);
       durations.add(route.duration);
+      routeIds.add(`${destination.id}/${route.duration}`);
       assert.ok(route.days.length >= 3, `${destination.id}/${route.duration} has too few days`);
 
       route.days.forEach((day, index) => {
@@ -59,7 +62,33 @@ test("every destination has complete, internally consistent duration routes", ()
         assert.ok(Array.isArray(day.stops));
         assert.ok(day.stops.length >= 1);
         assert.ok(day.stops.every((stop) => typeof stop === "string" && stop.trim()));
+        assert.ok(Array.isArray(day.mapStops));
+        assert.equal(day.mapStops.length, day.stops.length);
+
+        day.mapStops.forEach((mapStop, stopIndex) => {
+          assert.equal(mapStop.name, day.stops[stopIndex]);
+          assert.ok(Array.isArray(mapStop.coordinates));
+          assert.equal(mapStop.coordinates.length, 2);
+
+          const [latitude, longitude] = mapStop.coordinates;
+          assert.ok(Number.isFinite(latitude));
+          assert.ok(Number.isFinite(longitude));
+          assert.ok(latitude >= 24 && latitude <= 46, `${mapStop.name} latitude is outside Japan`);
+          assert.ok(longitude >= 122 && longitude <= 146, `${mapStop.name} longitude is outside Japan`);
+        });
       });
     }
   }
+
+  assert.deepEqual(
+    [...routeIds].sort(),
+    [
+      "kumamoto-aso/2n3d",
+      "kumamoto-aso/3n4d",
+      "takamatsu-sanuki/2n3d",
+      "takamatsu-sanuki/3n4d",
+      "yonago-san-in/2n3d",
+      "yonago-san-in/3n4d",
+    ],
+  );
 });
