@@ -60,9 +60,17 @@ export function normalizeDestinations(items) {
     if (!item || typeof item !== "object") return false;
 
     const hasIdentity =
-      isNonEmptyString(item.id) &&
-      isNonEmptyString(item.name) &&
-      Array.isArray(item.routes);
+      REQUIRED_DESTINATION_FIELDS.every((field) => isNonEmptyString(item[field])) &&
+      typeof item.imageAlt === "string" &&
+      Array.isArray(item.highlights) &&
+      item.highlights.length > 0 &&
+      item.highlights.every(isNonEmptyString) &&
+      Array.isArray(item.drivingNotes) &&
+      item.drivingNotes.length > 0 &&
+      item.drivingNotes.every(isNonEmptyString) &&
+      Array.isArray(item.routes) &&
+      item.routes.length >= 2 &&
+      item.routes.every(isValidRoute);
 
     if (!hasIdentity || seenIds.has(item.id)) return false;
 
